@@ -8,7 +8,7 @@ const itemRouter = express.Router();
 
 itemRouter.get('/potions', (req, res) => {
   Potion.findAll()
-    .then(potion => res.send(potion));
+    .then(potion => res.status(200).send(potion));
 });
 
 module.exports = itemRouter;
