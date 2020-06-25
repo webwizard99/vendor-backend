@@ -7,8 +7,11 @@ const Op = Sequelize.Op;
 const itemRouter = express.Router();
 
 itemRouter.get('/potions', (req, res) => {
+  console.log('potions GET route reached...')
   Potion.findAll()
-    .then(potion => res.status(200).send(potion));
+    .then(potion => {
+      console.log(potion)
+      res.status(200).send(potion)});
 });
 
 module.exports = itemRouter;
