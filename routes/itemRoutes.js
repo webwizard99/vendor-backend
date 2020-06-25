@@ -11,7 +11,8 @@ itemRouter.get('/potions', (req, res) => {
   Potion.findAll()
     .then(potion => {
       console.log(potion)
-      res.status(200).send(potion)});
+      res.status(200).send(potion)})
+    .catch(err => console.log(err));
 });
 
 module.exports = itemRouter;
