@@ -6,6 +6,8 @@ const itemRoutes = require('./routes/itemRoutes');
 
 const app = express();
 
+app.use('/', itemRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 db.authenticate()
