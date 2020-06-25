@@ -9,8 +9,8 @@ const client = new Client({
 
 client.connect();
 
-module.exports = new Sequelize(client.database, client.pauseDrain, client.password, {
-  hot: client.host,
+module.exports = new Sequelize(client.database, client.user, client.password, {
+  host: client.host,
   dialect: 'postgres',
   operatorAliases: false,
 
