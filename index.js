@@ -1,6 +1,9 @@
 const express = require('express');
 const db = require('./config/database');
 
+// route imports
+const itemRoutes = require('./routes/itemRoutes');
+
 const app = express();
 
 const PORT = process.env.PORT || 5000;
