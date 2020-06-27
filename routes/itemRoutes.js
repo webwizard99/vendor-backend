@@ -8,7 +8,7 @@ const itemRouter = express.Router();
 
 itemRouter.get('/potions', (req, res) => {
   console.log('potions GET route reached...');
-  Potion.hasOne(Item);
+  Item.hasOne(Potion);
   Potion.findAll({
     include: 
       { model: Item }
