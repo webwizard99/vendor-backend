@@ -10,5 +10,5 @@ let cssDir = fs.readdirSync(path.join(__dirname, '../', 'public', 'build', 'stat
 let cssChunk = cssDir.filter((cssFile) => { return cssFile.match(/.*\.(css)/ig)});
 
 reactChunks.chunk1 = jsChunks[0];
-reactChunks.chunk2 = jsChunks[2];
+reactChunks.chunk2 = jsChunks[3];
 reactChunks.css = cssChunk[0];
