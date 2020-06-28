@@ -14,7 +14,6 @@ itemRouter.get('/potions', (req, res) => {
       { model: Item }
   })
     .then(potion => {
-      console.log(potion)
       res.status(200).send(potion)})
     .catch(err => console.log(err));
 });
