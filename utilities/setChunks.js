@@ -1,4 +1,4 @@
-const reactChunks = require('../config/reactchunks');
+const reactChunks = require('../config/reactChunks');
 const fs = require('fs');
 const path = require('path');
 
