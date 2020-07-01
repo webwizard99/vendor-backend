@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: ${{ secrets.USER_NAME }}/${{ secrets.FRONTEND_REPO }} 
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: frontend
       - name: install packages on frontend
         run: |
