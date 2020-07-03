@@ -31,3 +31,8 @@ jobs:
           git add .
           git commit -m "Update React build files from dispatch event originating from frontend push."
           git push origin master
+      - uses: akhileshns/heroku-deploy@v3.0.0 # This is the action
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "vendor-backend" #Must be unique in Heroku
+          heroku_email: ${{ secrets.USER_EMAIL }}
