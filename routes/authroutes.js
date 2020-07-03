@@ -1,0 +1,28 @@
+const express = require('express');
+const passport = require('passport');
+
+
+const authRouter = express.Router();
+
+authRouter.get('/auth/facebook',
+  passport.authenticate('facebook')
+);
+
+authRouter.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    failureRedirect: '/'
+  }, (req, res) => {
+    res.send('authenticated')
+  })
+);
+
+authRouter.get('/api/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+authRouter.get('/api/current_user', (req, res) => {
+  res.send(req.user);
+});
+
+module.exports = authRouter;

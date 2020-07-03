@@ -1,0 +1,46 @@
+store
+  -name
+  -funds
+  -inventory
+    -items
+
+time
+
+dungeon
+  -levels
+    -mob list
+    -drop list
+
+mobs
+  -level
+  -range(lvls)
+  -hp
+  -off
+  -def
+
+items
+  -cost
+  -effect/stats
+
+item-types
+  #potion
+  #armor
+  #weapon
+
+adventurers
+  -funds
+  -level
+  -hp
+  -off
+  -def
+
+suppliers
+  -inventory
+  -stock (leveled list?)
+
+shopkeeper
+  -intuition
+  -influence
+
+events
+  price up or down
