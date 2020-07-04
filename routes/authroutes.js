@@ -5,7 +5,7 @@ const passport = require('passport');
 const authRouter = express.Router();
 
 authRouter.get('/auth/facebook',
-  passport.authenticate('facebook')
+  passport.authenticate('facebook');
 );
 
 authRouter.get('/auth/facebook/callback',
@@ -13,7 +13,7 @@ authRouter.get('/auth/facebook/callback',
     failureRedirect: '/',
     successRedirect: '/'
   }, (req, res) => {
-    res.send('authenticated')
+    res.redirect('/');
   })
 );
 
