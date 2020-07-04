@@ -10,13 +10,16 @@ authRouter.get('/auth/facebook',
 
 authRouter.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
-    failureRedirect: '/'
+    failureRedirect: '/',
+    successRedirect: '/'
   }, (req, res) => {
     res.send('authenticated')
   })
 );
 
-authRouter.get('/api/logout', (req, res) => {
+authRouter.get('/api/logout', {
+  failureRedirect: '/'
+}, (req, res) => {
   req.logout();
   res.redirect('/');
 });
