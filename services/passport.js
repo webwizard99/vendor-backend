@@ -6,13 +6,13 @@ const User = require('../models/User');
 
 // turn user into cookie
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.facebookId);
 });
 
 // get user from cookie
 passport.deserializeUser((id, done) => {
   User.findOne({
-    where: { id: id}
+    where: { facebookId: id}
   })
     .then(user => {
       done(null, user);
@@ -26,7 +26,7 @@ passport.use(
     callbackURL: "/auth/facebook/callback",
     profileFields: 'id',
     enableProof: true
-  }),
+  },
 
   async function(accessToken, refreshToken, profile, done) {
     const existingUser = await User.findOne(
@@ -41,6 +41,6 @@ passport.use(
     // create a new user
     const user = await User.Create(
       { facebookId: profile.id });
-    done(null, user);
+    return done(null, user);
   }
-)
+));

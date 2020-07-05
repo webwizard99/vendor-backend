@@ -14,7 +14,7 @@ require('./services/passport');
 // route imports
 const itemRoutes = require('./routes/itemRoutes');
 const frontendRoutes = require('./routes/frontEndRoutes');
-//const authRoutes = require('./routes/authroutes');
+const authRoutes = require('./routes/authroutes');
 
 const app = express();
 
@@ -50,6 +50,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // mount routers
 app.use('/', itemRoutes);
 app.use('/', frontendRoutes);
-//app.use('/', authRoutes);
+app.use('/', authRoutes);
 
 app.listen(PORT);
