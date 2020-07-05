@@ -17,9 +17,7 @@ authRouter.get('/auth/facebook/callback',
   })
 );
 
-authRouter.get('/api/logout', {
-  failureRedirect: '/'
-}, (req, res) => {
+authRouter.get('/api/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
