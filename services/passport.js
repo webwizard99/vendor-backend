@@ -3,6 +3,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('../config/keys');
 
 const User = require('../models/User');
+const userTypes = require('../config/userTypes');
 
 // turn user into cookie
 passport.serializeUser((user, done) => {
@@ -40,7 +41,8 @@ passport.use(
     
     // create a new user
     const user = await User.create(
-      { facebookId: profile.id });
+      { facebookId: profile.id,
+        type: userTypes.user });
     return done(null, user);
   }
 ));
