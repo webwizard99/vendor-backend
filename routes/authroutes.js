@@ -13,6 +13,7 @@ authRouter.get('/auth/facebook/callback',
     failureRedirect: '/',
     successRedirect: '/'
   }, (req, res) => {
+    console.log('facebook callback reached in auth route');
     res.redirect('/');
   })
 );
@@ -23,7 +24,7 @@ authRouter.get('/api/logout', (req, res) => {
 });
 
 authRouter.get('/api/current_user', (req, res) => {
-  console.log(req);
+  console.log(req.user);
   res.send(req.user);
 });
 
