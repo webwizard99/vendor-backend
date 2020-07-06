@@ -23,6 +23,7 @@ authRouter.get('/api/logout', (req, res) => {
 });
 
 authRouter.get('/api/current_user', (req, res) => {
+  console.log(req);
   res.send(req.user);
 });
 

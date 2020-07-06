@@ -4,7 +4,7 @@ const reactChunks = require('../config/reactChunks');
 const frontendRouter = express.Router();
 
 
-frontendRouter.get('/*', (req, res) => {
+frontendRouter.get('/', (req, res) => {
   const chunk1 = reactChunks.path + reactChunks.chunk1;
   const chunk2 = reactChunks.path + reactChunks.chunk2;
   const css = reactChunks.cssPath + reactChunks.css;
