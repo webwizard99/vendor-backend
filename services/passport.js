@@ -35,6 +35,7 @@ passport.use(
     });
       
     if (existingUser) {
+      console.log('existing user identified in facebook strategy in passport.js');
       // already have a record
       return done(null, existingUser);
     } 
