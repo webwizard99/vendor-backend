@@ -39,7 +39,7 @@ passport.use(
     } 
     
     // create a new user
-    const user = await User.Create(
+    const user = await User.create(
       { facebookId: profile.id });
     return done(null, user);
   }
