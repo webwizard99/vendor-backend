@@ -10,10 +10,8 @@ authRouter.get('/auth/facebook',
 
 authRouter.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
-    failureRedirect: '/'
-  }, (req, res) => {
-    console.log('facebook callback reached in auth route');
-    res.redirect('/');
+    failureRedirect: '/',
+    successRedirect: '/'
   })
 );
 
