@@ -21,6 +21,7 @@ const app = express();
 
 // require in mmodule to set React chunk file values
 require('./utilities/setChunks');
+require('./utilities/setEditorChunks');
 
 app.use(bodyParser.json());
 app.use(
