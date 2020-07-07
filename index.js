@@ -15,6 +15,7 @@ require('./services/passport');
 const itemRoutes = require('./routes/itemRoutes');
 const frontendRoutes = require('./routes/frontEndRoutes');
 const authRoutes = require('./routes/authroutes');
+const editorRoutes = require('./routes/editorRoutes');
 
 const app = express();
 
@@ -51,5 +52,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', itemRoutes);
 app.use('/', frontendRoutes);
 app.use('/', authRoutes);
+app.use('/editor', editorRoutes);
 
 app.listen(PORT);
