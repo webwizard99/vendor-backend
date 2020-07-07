@@ -1,5 +1,5 @@
 const express = require('express');
-const editorReactChunks = require('../config/reactChunks');
+const editorReactChunks = require('../config/editorReactChunks');
 
 const editorRouter = express.Router();
 
