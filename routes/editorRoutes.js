@@ -6,7 +6,6 @@ const userTypes = require('../config/userTypes');
 const editorRouter = express.Router();
 
 editorRouter.get('/', (req, res) => {
-  console.log(req.user.dataValues);
   if (req.user.dataValues.type !== userTypes.owner) {
     res.redirect('/');
   }
