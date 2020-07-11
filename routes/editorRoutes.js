@@ -4,6 +4,7 @@ const editorReactChunks = require('../config/editorReactChunks');
 const editorRouter = express.Router();
 
 editorRouter.get('/', (req, res) => {
+  console.log(req.user);
   const editorPrepend = '';
   const chunk1 = editorPrepend + editorReactChunks.path + editorReactChunks.chunk1;
   const chunk2 = editorPrepend + editorReactChunks.path + editorReactChunks.chunk2;
