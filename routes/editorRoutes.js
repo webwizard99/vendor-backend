@@ -2,13 +2,15 @@ const express = require('express');
 const editorReactChunks = require('../config/editorReactChunks');
 
 const userTypes = require('../config/userTypes');
+const authorization = require('../middleware/authorization');
 
 const editorRouter = express.Router();
 
-editorRouter.get('/', (req, res) => {
-  if (req.user.dataValues.type !== userTypes.owner) {
+editorRouter.get('/', authorization, (req, res) => {
+  if (req.authorization !== userTypes.owner) {
     res.redirect('/');
   }
+  
   const editorPrepend = '';
   const chunk1 = editorPrepend + editorReactChunks.path + editorReactChunks.chunk1;
   const chunk2 = editorPrepend + editorReactChunks.path + editorReactChunks.chunk2;
