@@ -56,32 +56,34 @@ itemRouter.post('/potions', async (req, res) => {
   // reject request if missing a field
   if (!name || !value || !type || !level || !potionTypes[type]) {
     res.status(400).send();
-  } else {
-    try {
-        const newItem = await Item.create({
-        name,
-        type: itemTypes.potion,
-        value,
-        details
-      });
-    } catch(err) {
-      console.log(err);
-    }
-
-    const newItemId = newItem.id;
-    try {
-      const newPotion = await Potion.create({
-        itemId: newItemId,
-        type,
-        level
-      });
-    } catch(err) {
-      console.log(err);
-    }
-
-    res.status(200).send(newPotion);
-    
+    return false;
   }
+  
+  try {
+      const newItem = await Item.create({
+      name,
+      type: itemTypes.potion,
+      value,
+      details
+    });
+  } catch(err) {
+    console.log(err);
+  }
+
+  const newItemId = newItem.id;
+  try {
+    const newPotion = await Potion.create({
+      itemId: newItemId,
+      type,
+      level
+    });
+  } catch(err) {
+    console.log(err);
+  }
+
+  res.status(200).send(newPotion);
+  
+
 })
 
 module.exports = itemRouter;
