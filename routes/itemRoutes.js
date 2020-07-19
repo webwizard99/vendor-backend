@@ -21,7 +21,7 @@ itemRouter.get('/potions', (req, res) => {
     .catch(err => console.log(err));
 });
 
-itemRouter.post('/potions', (req, res) => {
+itemRouter.post('/potions', async (req, res) => {
   let {
     key,
     name,
