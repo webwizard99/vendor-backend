@@ -22,6 +22,7 @@ itemRouter.get('/potions', (req, res) => {
 });
 
 itemRouter.post('/potions', async (req, res) => {
+  console.log('potions POST route reached');
   let {
     key,
     name,
@@ -58,7 +59,7 @@ itemRouter.post('/potions', async (req, res) => {
     res.status(400).send();
     return false;
   }
-  
+
   try {
       const newItem = await Item.create({
       name,
