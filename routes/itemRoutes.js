@@ -6,6 +6,7 @@ const Op = Sequelize.Op;
 
 const itemTypes = require('../config/itemTypes');
 const potionTypes = require('../config/potionTypes');
+const authorization = require('../middleware/authorization');
 
 const itemRouter = express.Router();
 
@@ -21,7 +22,7 @@ itemRouter.get('/potions', (req, res) => {
     .catch(err => console.log(err));
 });
 
-itemRouter.post('/potions', async (req, res) => {
+itemRouter.post('/potions', authorization, async (req, res) => {
   console.log('potions POST route reached');
   console.log(req.body);
   let {
@@ -86,8 +87,7 @@ itemRouter.post('/potions', async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).send(newPotion);
-  
+  res.status(200).redirect('/editor'); 
 
 })
 
