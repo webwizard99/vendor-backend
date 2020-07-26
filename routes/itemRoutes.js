@@ -23,6 +23,7 @@ itemRouter.get('/potions', (req, res) => {
 
 itemRouter.post('/potions', async (req, res) => {
   console.log('potions POST route reached');
+  console.log(req.body);
   let {
     key,
     name,
