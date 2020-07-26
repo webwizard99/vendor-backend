@@ -25,7 +25,6 @@ itemRouter.post('/potions', async (req, res) => {
   console.log('potions POST route reached');
   console.log(req.body);
   let {
-    key,
     name,
     value,
     details,
@@ -34,10 +33,10 @@ itemRouter.post('/potions', async (req, res) => {
 
   } = req.body;
 
-  if (key != process.env.EDITOR_API_KEY) {
-    console.log('missing key');
-    res.status(404).send();
-  }
+  // if (key != process.env.EDITOR_API_KEY) {
+  //   console.log('missing key');
+  //   res.status(404).send();
+  // }
 
   // validate input types
   if (name && typeof name !== 'string') {
@@ -63,8 +62,9 @@ itemRouter.post('/potions', async (req, res) => {
     return false;
   }
 
+  let newItem;
   try {
-      const newItem = await Item.create({
+      newItem = await Item.create({
       name,
       type: itemTypes.potion,
       value,
@@ -75,8 +75,9 @@ itemRouter.post('/potions', async (req, res) => {
   }
 
   const newItemId = newItem.id;
+  let newPotion;
   try {
-    const newPotion = await Potion.create({
+    newPotion = await Potion.create({
       itemId: newItemId,
       type,
       level
