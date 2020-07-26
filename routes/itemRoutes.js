@@ -34,6 +34,7 @@ itemRouter.post('/potions', async (req, res) => {
   } = req.body;
 
   if (key != process.env.EDITOR_API_KEY) {
+    console.log('missing key');
     res.status(404).send();
   }
 
@@ -56,6 +57,7 @@ itemRouter.post('/potions', async (req, res) => {
 
   // reject request if missing a field
   if (!name || !value || !type || !level || !potionTypes[type]) {
+    console.log('potion post request missing field');
     res.status(400).send();
     return false;
   }
