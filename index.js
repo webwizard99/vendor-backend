@@ -23,7 +23,7 @@ const app = express();
 require('./utilities/setChunks');
 require('./utilities/setEditorChunks');
 
-app.use(bodyParser.json());
+app.use(bodyParser({ extended: true }));
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
