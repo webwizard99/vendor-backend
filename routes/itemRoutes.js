@@ -22,7 +22,7 @@ itemRouter.get('/potions', (req, res) => {
     .catch(err => console.log(err));
 });
 
-itemRouter.post('/potions', authorization, async (req, res) => {
+itemRouter.post('/potions', authorization, async (req, res, next) => {
   console.log('potions POST route reached');
   console.log(req.body);
   let {
@@ -40,11 +40,15 @@ itemRouter.post('/potions', authorization, async (req, res) => {
   // }
 
   // validate input types
-
-  if (_METHOD === '_put') {
-    console.log('put method sent to potions POST route');
+  try {
+    if (_METHOD === '_put') {
+      console.log('put method sent to potions POST route');
+      next('exiting from potion route')
+    }
+  } catch(err) {
     res.status(400).redirect('/editor');
   }
+  
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
@@ -70,6 +74,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
   let newItem;
   try {
+      
       newItem = await Item.create({
       name,
       type: itemTypes.potion,
