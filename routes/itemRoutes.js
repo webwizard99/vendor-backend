@@ -30,8 +30,8 @@ itemRouter.post('/potions', authorization, async (req, res) => {
     value,
     details,
     type,
-    level
-
+    level,
+    _METHOD
   } = req.body;
 
   // if (key != process.env.EDITOR_API_KEY) {
@@ -40,6 +40,11 @@ itemRouter.post('/potions', authorization, async (req, res) => {
   // }
 
   // validate input types
+
+  if (_METHOD === '_put') {
+    console.log('put method sent to potions POST route');
+    res.status(400).redirect('/editor');
+  }
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
