@@ -103,7 +103,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
 });
 
-itemRouter.delete('/potion/:id', (req, res) => {
+itemRouter.delete('/potion/:itemId', (req, res) => {
   let id = req.id;
 
   if (id && typeof id != 'number') {
