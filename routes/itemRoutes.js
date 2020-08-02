@@ -22,6 +22,11 @@ itemRouter.get('/potions', (req, res) => {
     .catch(err => console.log(err));
 });
 
+itemRouter.param('itemId', (req, res, next, id) => {
+  req.id = id;
+  next();
+})
+
 itemRouter.post('/potions', authorization, async (req, res) => {
   console.log('potions POST route reached');
   console.log(req.body);
@@ -95,6 +100,35 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
   res.status(200).redirect('/editor'); 
 
+});
+
+itemRouter.delete('/potion/:id', (req, res) => {
+  let id = req.id;
+
+  if (id && typeof id != 'number') {
+    id = Number.parseInt(id);
+  }
+
+  if (!id) {
+    res.status(400).send();
+  } else {
+    Potion.belongsTo(Item);
+    Potion.findAll({
+      where: {
+        id: id
+      },
+      include: 
+        { model: Item }
+    })
+      .then(potion => {
+        Item.destroy({ where: { id: potion.item.id }})
+          .catch(err => console.log(err));
+        Potion.destroy({ where: { id: potion.id }})
+          .then(res.status(200).redirect('/editor'))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+    }
 })
 
 module.exports = itemRouter;
