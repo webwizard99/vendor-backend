@@ -122,10 +122,12 @@ itemRouter.delete('/potion/:itemId', (req, res) => {
         { model: Item }
     })
       .then(potion => {
-        Item.destroy({ where: { id: potion.item.id }})
-          .catch(err => console.log(err));
-        Potion.destroy({ where: { id: potion.id }})
-          .then(res.status(200).redirect('/editor'))
+        Item.destroy({ where: { id: potion.itemId }})
+          .then(
+            Potion.destroy({ where: { id: potion.id }})
+            .then(res.status(200).redirect('/editor'))
+            .catch(err => console.log(err))
+          )
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
