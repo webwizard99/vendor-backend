@@ -106,6 +106,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
 itemRouter.delete('/potion/:itemId', async (req, res) => {
   let id = req.id;
+  console.log(`id: ${id}`);
 
   if (id && typeof id != 'number') {
     id = Number.parseInt(id);
@@ -116,13 +117,11 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
   } else {
     let delPotion;
     try {
-      Potion.belongsTo(Item);
+      // Potion.belongsTo(Item);
       delPotion = await Potion.findAll({
         where: {
           id: id
-        },
-        include: 
-          { model: Item }
+        }
       });
     } catch (err) {
       console.log(err);
