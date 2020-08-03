@@ -24,6 +24,7 @@ itemRouter.get('/potions', (req, res) => {
 
 itemRouter.param('itemId', (req, res, next, id) => {
   console.log('param middleware for id reached');
+  console.log(id);
   req.id = id;
   next();
 })
