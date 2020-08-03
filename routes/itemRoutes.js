@@ -103,7 +103,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
 });
 
-itemRouter.delete('/potion/:itemId', (req, res) => {
+itemRouter.delete('/potion/:itemId', async (req, res) => {
   let id = req.id;
 
   if (id && typeof id != 'number') {
@@ -113,25 +113,38 @@ itemRouter.delete('/potion/:itemId', (req, res) => {
   if (!id) {
     res.status(400).send();
   } else {
-    Potion.belongsTo(Item);
-    Potion.findAll({
-      where: {
-        id: id
-      },
-      include: 
-        { model: Item }
-    })
-      .then(potion => {
-        Item.destroy({ where: { id: potion.itemId }})
-          .then(
-            Potion.destroy({ where: { id: potion.id }})
-            .then(res.status(200).redirect('/editor'))
-            .catch(err => console.log(err))
-          )
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+    let delPotion;
+    try {
+      Potion.belongsTo(Item);
+      delPotion = await Potion.findAll({
+        where: {
+          id: id
+        },
+        include: 
+          { model: Item }
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
     }
+
+    const itemId = delPotion.itemId;
+    try {
+      Potion.destroy({ where: { id: delPotion.id }});
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+    }
+
+    try {
+      Item.destroy({ where: { id: itemId }}) 
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+    }
+    
+    res.status(200).redirect('/editor');        
+  }
 })
 
 module.exports = itemRouter;
