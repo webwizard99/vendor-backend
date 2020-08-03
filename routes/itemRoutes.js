@@ -128,23 +128,27 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
       res.status(400).send();
     }
 
-    const itemId = await delPotion.itemId;
-    console.log(`itemId: ${itemId}`)
-    try {
-      Potion.destroy({ where: { id: id }});
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-    }
-
-    try {
-      Item.destroy({ where: { id: itemId }}) 
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-    }
+    Promise.allSettled()
+      .then(() => {
+        const itemId = await delPotion.itemId;
+        console.log(`itemId: ${itemId}`)
+        try {
+          Potion.destroy({ where: { id: id }});
+        } catch (err) {
+          console.log(err);
+          res.status(400).send();
+        }
     
-    res.status(200).redirect('/editor');        
+        try {
+          Item.destroy({ where: { id: itemId }}) 
+        } catch (err) {
+          console.log(err);
+          res.status(400).send();
+        }
+        
+        res.status(200).redirect('/editor');
+      })
+    
   }
 })
 
