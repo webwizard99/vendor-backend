@@ -131,10 +131,10 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
     Promise.allSettled(delPotion)
       .then(async (result) => {
         
-        console.log(delPotion);
-        console.log(typeof delPotion);
+        // console.log(delPotion);
+        // console.log(typeof delPotion);
         console.log(delPotion[0]);
-        console.log(`deleting... potion id: ${id}, itemId: ${delPotion.itemId}`);
+        console.log(`deleting... potion id: ${id}, itemId: ${delPotion[0].itemId}`);
         const itemId = delPotion.itemId;
         
         console.log(`itemId: ${itemId}`)
