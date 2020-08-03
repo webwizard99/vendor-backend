@@ -129,7 +129,7 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
     }
 
     Promise.allSettled()
-      .then(() => {
+      .then(async () => {
         const itemId = await delPotion.itemId;
         console.log(`itemId: ${itemId}`)
         try {
