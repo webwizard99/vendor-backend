@@ -132,6 +132,7 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
       .then(async (result) => {
         console.log(result);
         console.log(result.value);
+        console.log(delPotion);
         const itemId = result.value.dataValues.itemId;
         
         console.log(`itemId: ${itemId}`)
