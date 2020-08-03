@@ -148,7 +148,6 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
         }
       });
   }
-  res.status(200).redirect('/editor');
 })
 
 module.exports = itemRouter;
