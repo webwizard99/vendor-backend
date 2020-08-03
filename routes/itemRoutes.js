@@ -152,8 +152,11 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
           res.status(400).send();
         }
         
-        res.status(200).redirect('/editor');
+        
       })
+      .then(
+        res.status(200).redirect('/editor');
+      )
     
   }
 })
