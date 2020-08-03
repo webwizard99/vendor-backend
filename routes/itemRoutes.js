@@ -131,13 +131,8 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
     Promise.allSettled(delPotion)
       .then(async (result) => {
         
-        // console.log(delPotion);
-        // console.log(typeof delPotion);
-        console.log(delPotion[0].dataValues);
-        console.log(`deleting... potion id: ${id}, itemId: ${delPotion[0].dataValues.itemId}`);
         const itemId = delPotion[0].dataValues.itemId;
-        
-        console.log(`itemId: ${itemId}`)
+
         try {
           Potion.destroy({ where: { id: id }});
         } catch (err) {
@@ -151,13 +146,7 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
           console.log(err);
           res.status(400).send();
         }
-        
-        
-      })
-      .then(
-        res.status(200).redirect('/editor');
-      )
-    
+      });
   }
 })
 
