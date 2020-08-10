@@ -1,16 +1,16 @@
 const express = require('express');
-const Item = require('../models/Item');
-const Potion = require('../models/Potion');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+const Item = require('../../models/Item');
+const Potion = require('../../models/Potion');
+// const Sequelize = require('sequelize');
 
-const itemTypes = require('../config/itemTypes');
-const potionTypes = require('../config/potionTypes');
-const authorization = require('../middleware/authorization');
+const itemTypes = require('../../config/itemTypes');
+const potionTypes = require('../../config/potionTypes');
+const authorization = require('../../middleware/authorization');
 
-const itemRouter = express.Router();
+const potionRouter = express.Router();
 
-itemRouter.get('/potions', (req, res) => {
+// GET route for all potions
+potionRouter.get('/potions', (req, res) => {
   console.log('potions GET route reached...');
   Potion.belongsTo(Item);
   Potion.findAll({
@@ -22,16 +22,10 @@ itemRouter.get('/potions', (req, res) => {
     .catch(err => console.log(err));
 });
 
-itemRouter.param('itemId', (req, res, next, id) => {
-  console.log('param middleware for id reached');
-  console.log(id);
-  req.id = id;
-  next();
-})
-
-itemRouter.post('/potions', authorization, async (req, res) => {
-  console.log('potions POST route reached');
-  console.log(req.body);
+// POST and PUT route (due to composition of request through
+// HTML form only allowing POST request) for potions
+potionRouter.post('/potions', authorization, async (req, res) => {
+  console.log('potions POST/PUT route reached');
   let {
     name,
     value,
@@ -41,18 +35,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
     _METHOD
   } = req.body;
 
-  // if (key != process.env.EDITOR_API_KEY) {
-  //   console.log('missing key');
-  //   res.status(404).send();
-  // }
-
   // validate input types
-
-  if (_METHOD === '_put') {
-    console.log('put method sent to potions POST route');
-    res.status(400).redirect('/editor');
-    return;
-  }
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
@@ -76,6 +59,14 @@ itemRouter.post('/potions', authorization, async (req, res) => {
     return false;
   }
 
+  // handle PUT request
+  if (_METHOD === '_put') {
+    console.log('PUT method sent to potions POST route');
+    res.status(400).redirect('/editor');
+    return;
+  }
+
+  // attempt to create a new Item
   let newItem;
   try {
       newItem = await Item.create({
@@ -88,6 +79,7 @@ itemRouter.post('/potions', authorization, async (req, res) => {
     console.log(err);
   }
 
+  // capture item id for foreign key to create Potion
   const newItemId = newItem.id;
   let newPotion;
   try {
@@ -104,14 +96,17 @@ itemRouter.post('/potions', authorization, async (req, res) => {
 
 });
 
-itemRouter.delete('/potion/:itemId', async (req, res) => {
+// DELETE route for potions
+potionRouter.delete('/potion/:itemId', async (req, res) => {
   let id = req.id;
   console.log(`id: ${id}`);
 
+  // Validate data
   if (id && typeof id != 'number') {
     id = Number.parseInt(id);
   }
 
+  // Get potion with ID sent to route
   if (!id) {
     res.status(400).send();
   } else {
@@ -128,6 +123,9 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
       res.status(400).send();
     }
 
+    // Await retrieval of potion so Item foreign key may
+    // be retreived to allow Item to be deleted along with
+    // Potion.
     Promise.allSettled(delPotion)
       .then(async (result) => {
         
@@ -148,6 +146,6 @@ itemRouter.delete('/potion/:itemId', async (req, res) => {
         }
       });
   }
-})
+});
 
-module.exports = itemRouter;
+module.exports = potionRouter;

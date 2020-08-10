@@ -12,7 +12,7 @@ const passport = require('passport');
 require('./services/passport');
 
 // route imports
-const itemRoutes = require('./routes/itemRoutes');
+const itemRoutes = require('./routes/items/itemRoutes');
 const frontendRoutes = require('./routes/frontEndRoutes');
 const authRoutes = require('./routes/authroutes');
 const editorRoutes = require('./routes/editorRoutes');
