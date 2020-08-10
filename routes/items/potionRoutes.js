@@ -9,6 +9,13 @@ const authorization = require('../../middleware/authorization');
 
 const potionRouter = express.Router();
 
+potionRouter.param('itemId', (req, res, next, id) => {
+  console.log('param middleware for id reached');
+  console.log(id);
+  req.id = id;
+  next();
+});
+
 // GET route for all potions
 potionRouter.get('/potions', (req, res) => {
   console.log('potions GET route reached...');
