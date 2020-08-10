@@ -92,7 +92,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     try {
       updatedItem = await Item.update({
         name,
-        type,
+        type: itemTypes.potion,
         value,
         details
     }, { where: {
