@@ -39,6 +39,8 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     details,
     type,
     level,
+    id,
+    itemId,
     _METHOD
   } = req.body;
 
@@ -69,7 +71,46 @@ potionRouter.post('/potions', authorization, async (req, res) => {
   // handle PUT request
   if (_METHOD === '_put') {
     console.log('PUT method sent to potions POST route');
-    res.status(400).redirect('/editor');
+
+    console.log(`id: ${id}, itemId: ${itemId}`);
+
+    if (id !== null && typeof id !== 'number') {
+      id = Number.parseInt(id);
+    }
+
+    if (itemId !== null && typeof itemId !== 'number') {
+      itemId = Number.parseInt(itemId);
+    }
+
+    if (id === null || itemId === null) {
+      console.log('Attempted PUT request without valid ID');
+      res.status(400).redirect('/editor');
+      return;
+    }
+
+    let updatedItem;
+    try {
+      updatedItem = await Item.update({
+
+    }, { where: {
+      id: itemId
+    }});
+    } catch(err) {
+      console.log(err);
+    }
+
+    let updatedPotion;
+    try {
+      updatedPotion = await Potion.update({
+
+      }, { where: {
+        id: id
+      }})
+    } catch (err) {
+      console.log(err);
+    }
+      
+    res.status(200).redirect('/editor');
     return;
   }
 
