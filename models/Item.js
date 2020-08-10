@@ -13,6 +13,9 @@ const Item = db.define('item', {
   },
   details: {
     type: Sequelize.TEXT
+  },
+  rarity: {
+    type: Sequelize.INTEGER
   }
 });
 

@@ -39,6 +39,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     details,
     type,
     level,
+    rarity,
     id,
     itemId,
     _METHOD
@@ -61,8 +62,11 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     level = Number.parseInt(level);
   }
 
+  if (rarity && typeof rarity !== 'number') {
+    rarity = Number.parseInt(rarity);
+  }
   // reject request if missing a field
-  if (!name || !value || !type || !level || !potionTypes[type]) {
+  if (!name || !value || !type || !level || !rarity || !potionTypes[type]) {
     console.log('potion post request missing field');
     res.status(400).send();
     return false;
@@ -94,7 +98,8 @@ potionRouter.post('/potions', authorization, async (req, res) => {
         name,
         type: itemTypes.potion,
         value,
-        details
+        details,
+        rarity
     }, { where: {
       id: itemId
     }});
@@ -125,7 +130,8 @@ potionRouter.post('/potions', authorization, async (req, res) => {
       name,
       type: itemTypes.potion,
       value,
-      details
+      details,
+      rarity
     });
   } catch(err) {
     console.log(err);

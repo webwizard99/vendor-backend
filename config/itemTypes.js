@@ -1,3 +1,4 @@
 module.exports = {
-  potion: 'potion'
+  potion: 'potion',
+  weapon: 'weapon'
 }
