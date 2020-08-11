@@ -8,8 +8,6 @@ const authorization = require('../../middleware/authorization');
 const weaponRouter = express.Router();
 
 weaponRouter.get('/weapons', async (req, res) => {
-  console.log('weapons GET route reached...');
-
   let allWeapons;
   try {
     Weapon.belongsTo(Item);
@@ -23,7 +21,85 @@ weaponRouter.get('/weapons', async (req, res) => {
   
   res.status(200).send(allWeapons);
   
-})
+});
+
+// POST and PUT route (due to composition of request through
+// HTML form only allowing POST request) for weapons
+weaponRouter.post('/weapons', authorization, async (req, res) => {
+  let {
+    name,
+    value,
+    details,
+    rarity,
+    level,
+    damage,
+    id,
+    itemId,
+    _METHOD
+  } = req.body;
+
+  // validate input types
+  if (name && typeof name !== 'string') {
+    name = name.toString();
+  }
+  if (value && typeof value !== 'number') {
+    value = Number.parseInt(value);
+  }
+  if (details && typeof details !== 'string') {
+    details = details.toString();
+  }
+  if (rarity && typeof rarity !== 'number') {
+    rarity = Number.parseInt(rarity);
+  }
+  if (level && typeof level !== 'number') {
+    level = Number.parseInt(level);
+  }
+  if (damage && typeof damage !== 'number') {
+    damage = Number.parseInt(damage);
+  }
+
+  // reject request if missing a field
+  if (!name || !value || !rarity || !level || !damage) {
+    console.log('weapon post request missing field');
+    res.status(400).send();
+    return false;
+  }
+
+  if (_METHOD === '_put') {
+    console.log('PUT method sent to potions POST route');
+    res.status(404).send();
+    return false;
+  }
+
+  // attempt to create a new item
+  let newItem;
+  try {
+    newItem = await Item.create({
+      name,
+      type: itemTypes.weapon,
+      value,
+      details,
+      rarity
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  // capture item id for foreign key to create Weapon
+  const newItemId = newItem.id;
+  let newWeapon;
+  try {
+    newWeapon = await Weapon.create({
+      itemId: newItemId,
+      level,
+      damage
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  res.status(200).redirect('/editor');
+});
 
 
 module.exports = weaponRouter;
