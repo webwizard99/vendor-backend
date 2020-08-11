@@ -1,4 +1,5 @@
 module.exports = {
   potion: 'potion',
-  weapon: 'weapon'
+  weapon: 'weapon',
+  armor: 'armor'
 }

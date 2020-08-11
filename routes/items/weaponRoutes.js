@@ -22,10 +22,10 @@ weaponRouter.get('/weapons', async (req, res) => {
     })
   } catch(err) {
     console.log(err);
+    res.status(400).send();
   }
   
   res.status(200).send(allWeapons);
-  
 });
 
 // POST and PUT route (due to composition of request through
