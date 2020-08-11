@@ -7,6 +7,11 @@ const authorization = require('../../middleware/authorization');
 
 const armorRouter = express.Router();
 
+armorRouter.param('itemId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 armorRouter.get('/armor', async (req, res) => {
   let allArmor;
   try {
@@ -148,6 +153,59 @@ armorRouter.post('/armor', authorization, async (req, res) => {
   }
 
   res.status(200).redirect('/editor');
-})
+});
+
+armorRouter.delete('/armor/:itemId', authorization, async (req, res) => {
+  let id = req.id;
+
+  // Validate data
+  if (id && typeof id != 'number') {
+    id = Number.parseInt(id);
+  }
+
+  // Exit if no valid ID sent
+  if (!id) {
+    res.status(400).send();
+    return;
+  }
+
+  // get Armor with ID sent to route
+  let delArmor;
+  try {
+    delArmor = await Armor.findAll({
+      where: {
+        id: id
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
+
+  // Await retrieval of armor so Item foreign key may
+  // be retreived to allow Item to be deleted along with
+  // Armor.
+  Promise.allSettled(delArmor)
+    .then(async (result) => {
+      const itemId = delArmor[0].dataValues.itemId;
+
+      try {
+        Armor.destroy({ where: { id: id } });
+      } catch (err) {
+        console.log(err);
+        res.status(400).send;
+        return;
+      }
+
+      try {
+        Item.destroy({ where: { id: itemId } });
+      } catch (err) {
+        console.log(err);
+        res.status(400).send;
+        return;
+      }
+    });
+});
 
 module.exports = armorRouter;
