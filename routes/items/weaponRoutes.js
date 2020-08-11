@@ -70,8 +70,8 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
     return false;
   }
 
+  // handle PUT requests
   if (_METHOD === '_put') {
-    console.log('PUT method sent to potions POST route');
 
     if (id !== null && typeof id !== 'number') {
       id = Number.parseInt(id);
