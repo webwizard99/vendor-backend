@@ -94,7 +94,7 @@ armorRouter.post('/armor', authorization, async (req, res) => {
     newArmor = await Armor.create({
       itemId: newItemId,
       level,
-      damage
+      armor
     });
   } catch (err) {
     console.log(err);
