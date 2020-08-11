@@ -7,6 +7,11 @@ const authorization = require('../../middleware/authorization');
 
 const weaponRouter = express.Router();
 
+weaponRouter.param('itemId', (req, res, next, id) => {
+  req.id = id;
+  next();
+})
+
 weaponRouter.get('/weapons', async (req, res) => {
   let allWeapons;
   try {
@@ -145,6 +150,59 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
   }
 
   res.status(200).redirect('/editor');
+});
+
+weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
+  let id = req.id;
+
+  // Validate data
+  if (id && typeof id != 'number') {
+    id = Number.parseInt(id);
+  }
+
+  // Exit if no valid ID sent
+  if (!id) {
+    res.status(400).send();
+    return;
+  }
+
+  // get Wewpon with ID sent to route
+  let delWeapon;
+  try {
+    delWeapon = await Weapon.findAll({
+      where: {
+        id: id
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
+
+  // Await retrieval of weapon so Item foreign key may
+  // be retreived to allow Item to be deleted along with
+  // Weapon.
+  Promise.allSettled(delWeapon)
+    .then(async (result) => {
+      const itemId = delWeapon[0].dataValues.itemId;
+
+      try {
+        Weapon.destroy({ where: { id: id } });
+      } catch (err) {
+        console.log(err);
+        res.status(400).send;
+        return;
+      }
+
+      try {
+        Item.destroy({ where: { id: itemId } });
+      } catch (err) {
+        console.log(err);
+        res.status(400).send;
+        return;
+      }
+    });
 });
 
 

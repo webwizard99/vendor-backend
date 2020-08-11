@@ -10,8 +10,6 @@ const authorization = require('../../middleware/authorization');
 const potionRouter = express.Router();
 
 potionRouter.param('itemId', (req, res, next, id) => {
-  console.log('param middleware for id reached');
-  console.log(id);
   req.id = id;
   next();
 });
@@ -155,7 +153,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 });
 
 // DELETE route for potions
-potionRouter.delete('/potion/:itemId', async (req, res) => {
+potionRouter.delete('/potion/:itemId', authorization, async (req, res) => {
   let id = req.id;
   console.log(`id: ${id}`);
 
@@ -164,46 +162,49 @@ potionRouter.delete('/potion/:itemId', async (req, res) => {
     id = Number.parseInt(id);
   }
 
-  // Get potion with ID sent to route
+  // Exit if no valid ID sent  
   if (!id) {
     res.status(400).send();
-  } else {
-    let delPotion;
-    try {
-      // Potion.belongsTo(Item);
-      delPotion = await Potion.findAll({
-        where: {
-          id: id
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-    }
-
-    // Await retrieval of potion so Item foreign key may
-    // be retreived to allow Item to be deleted along with
-    // Potion.
-    Promise.allSettled(delPotion)
-      .then(async (result) => {
-        
-        const itemId = delPotion[0].dataValues.itemId;
-
-        try {
-          Potion.destroy({ where: { id: id }});
-        } catch (err) {
-          console.log(err);
-          res.status(400).send();
-        }
-    
-        try {
-          Item.destroy({ where: { id: itemId }}) 
-        } catch (err) {
-          console.log(err);
-          res.status(400).send();
-        }
-      });
+    return;
   }
+
+  // Get potion with ID sent to route
+  let delPotion;
+  try {
+    // Potion.belongsTo(Item);
+    delPotion = await Potion.findAll({
+      where: {
+        id: id
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+  }
+
+  // Await retrieval of potion so Item foreign key may
+  // be retreived to allow Item to be deleted along with
+  // Potion.
+  Promise.allSettled(delPotion)
+    .then(async (result) => {
+      
+      const itemId = delPotion[0].dataValues.itemId;
+
+      try {
+        Potion.destroy({ where: { id: id }});
+      } catch (err) {
+        console.log(err);
+        res.status(400).send();
+      }
+  
+      try {
+        Item.destroy({ where: { id: itemId }}) 
+      } catch (err) {
+        console.log(err);
+        res.status(400).send();
+      }
+    });
+
 });
 
 module.exports = potionRouter;
