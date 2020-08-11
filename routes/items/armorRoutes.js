@@ -69,7 +69,54 @@ armorRouter.post('/armor', authorization, async (req, res) => {
   // handle PUT requests
   if (_METHOD === '_put') {
     console.log('PUT method sent to armor POST route');
-    res.status(400).send();
+
+    // validate inputs
+    if (id !== null && typeof id !== 'number') {
+      id = Number.parseInt(id);
+    }
+    if (itemId !== null && typeof itemId !== 'number') {
+      itemId = Number.parseInt(itemId);
+    }
+    if (id === null || itemId === null) {
+      console.log('Attempted PUT request without valid ID');
+      res.status(400).redirect('/editor');
+      return;
+    }
+
+    // update Item record
+    let updatedItem;
+    try {
+      updatedItem = await Item.update({
+        name,
+        type: itemTypes.armor,
+        value,
+        details,
+        rarity
+      }, { where: {
+        id: itemId
+      }});
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+      return;
+    }
+
+    // update Armor record
+    let updatedArmor;
+    try {
+      updatedArmor = await Armor.update({
+        level,
+        armor
+      }, { where: {
+        id: id
+      }});
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+      return;
+    }
+
+    res.status(200).redirect('/editor');
     return;
   }
 
