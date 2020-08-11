@@ -67,8 +67,54 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
 
   if (_METHOD === '_put') {
     console.log('PUT method sent to potions POST route');
-    res.status(404).send();
-    return false;
+
+    if (id !== null && typeof id !== 'number') {
+      id = Number.parseInt(id);
+    }
+
+    if (itemId !== null && typeof itemId !== 'number') {
+      itemId = Number.parseInt(itemId);
+    }
+
+    if (id === null || itemId === null) {
+      console.log('Attempted PUT request without valid ID');
+      res.status(400).redirect('/editor');
+      return;
+    }
+
+    let updatedItem;
+    try {
+      updatedItem = await Item.update({
+        name,
+        type: itemTypes.weapon,
+        value,
+        details,
+        rarity
+      }, { where: {
+        id: itemId
+      }});
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+      return;
+    }
+
+    let updatedWeapon;
+    try {
+      updatedWeapon = await Weapon.update({
+        level,
+        damage
+      }, { where: {
+        id: id
+      }});
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+      return;
+    }
+
+    res.status(200).redirect('/editor');
+    return;
   }
 
   // attempt to create a new item

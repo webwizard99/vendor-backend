@@ -32,7 +32,6 @@ potionRouter.get('/potions', (req, res) => {
 // POST and PUT route (due to composition of request through
 // HTML form only allowing POST request) for potions
 potionRouter.post('/potions', authorization, async (req, res) => {
-  console.log('potions POST/PUT route reached');
   let {
     name,
     value,
@@ -74,9 +73,6 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 
   // handle PUT request
   if (_METHOD === '_put') {
-    console.log('PUT method sent to potions POST route');
-
-    console.log(`id: ${id}, itemId: ${itemId}`);
 
     if (id !== null && typeof id !== 'number') {
       id = Number.parseInt(id);
@@ -105,6 +101,8 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     }});
     } catch(err) {
       console.log(err);
+      res.status(400).send();
+      return;
     }
 
     let updatedPotion;
@@ -114,9 +112,11 @@ potionRouter.post('/potions', authorization, async (req, res) => {
         level
       }, { where: {
         id: id
-      }})
+      }});
     } catch (err) {
       console.log(err);
+      res.status(400).send();
+      return;
     }
       
     res.status(200).redirect('/editor');
