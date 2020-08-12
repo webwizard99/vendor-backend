@@ -10,26 +10,32 @@ const supplierRouter = express.Router();
 supplierRouter.get('/suppliers', async (req, res) => {
   console.log('suppliers GET route reached...');
   
-  let offerings;
+  let suppliers;
   try {
     Supplier.hasMany(Offering);
     Offering.belongsTo(Supplier);
-    offerings = await Offering.findAll({
+    suppliers = await Supplier.findAll({
       include: {
-        model: Supplier
+        model: Offering
       },
-      group: ['Offering', 'supplierId']
-      // order: [
-      //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
-      // ]
-    });
+      group: ['id']
+    })
+    // offerings = await Offering.findAll({
+    //   include: {
+    //     model: Supplier
+    //   },
+    //   group: ['Offering', 'supplierId']
+    //   // order: [
+    //   //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
+    //   // ]
+    // });
   } catch (err) {
     console.log(err);
     res.status(400).send();
     return;
   }
 
-  res.status(200).send(offerings);
+  res.status(200).send(suppliers);
 
   // let suppliers;
   // try {
