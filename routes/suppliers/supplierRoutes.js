@@ -17,7 +17,7 @@ supplierRouter.get('/suppliers', async (req, res) => {
       include: {
         model: Supplier
       },
-      group: ['supplier.id']
+      group: ['Supplier.id']
       // order: [
       //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
       // ]
