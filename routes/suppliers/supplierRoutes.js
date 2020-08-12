@@ -16,11 +16,11 @@ supplierRouter.get('/suppliers', async (req, res) => {
     offerings = await Offering.findAll({
       include: {
         model: Supplier
-      },
-      group: 'supplierId',
-      order: [
-        [ { model: models.Supplier, as: 'Supplier'}, 'id' ]
-      ]
+      }
+      // group: 'supplierId',
+      // order: [
+      //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
+      // ]
     });
   } catch (err) {
     console.log(err);
