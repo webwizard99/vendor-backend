@@ -16,8 +16,8 @@ supplierRouter.get('/suppliers', async (req, res) => {
     offerings = await Offering.findAll({
       include: {
         model: Supplier
-      }
-      // group: 'supplierId',
+      },
+      group: 'supplierId',
       // order: [
       //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
       // ]
