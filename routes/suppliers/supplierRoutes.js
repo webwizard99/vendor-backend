@@ -4,6 +4,7 @@ const Offering = require('../../models/Offering');
 
 const itemTypes = require('../../config/itemTypes');
 const authorization = require('../../middleware/authorization');
+const { Sequelize, DataTypes } = require('sequelize/types');
 
 const supplierRouter = express.Router();
 
@@ -12,7 +13,24 @@ supplierRouter.get('/suppliers', async (req, res) => {
   
   let offerings;
   try {
-    Offering.belongsToMany(Supplier);
+    const SupplierOfferings = Sequelize.define('SupplierOfferings', {
+      SupplierId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: Supplier,
+          key: 'id'
+        }
+      },
+      OfferingId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: Offering,
+          key: 'id'
+        }
+      }
+    });
+    Offering.belongsToOne(Supplier, { through: SupplierOfferings });
+    Supplier.belongsToMany(Offering, { through: SupplierOfferings });
     offerings = await Offering.findAll({
       include: {
         model: Supplier
