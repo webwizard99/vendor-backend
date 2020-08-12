@@ -4,7 +4,6 @@ const Offering = require('../../models/Offering');
 
 const itemTypes = require('../../config/itemTypes');
 const authorization = require('../../middleware/authorization');
-const { Sequelize, DataTypes } = require('sequelize/types');
 
 const supplierRouter = express.Router();
 
