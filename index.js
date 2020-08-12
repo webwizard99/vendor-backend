@@ -13,6 +13,7 @@ require('./services/passport');
 
 // route imports
 const itemRoutes = require('./routes/items/itemRoutes');
+const supplierRoutes = require('./routes/suppliers/supplierRoutes');
 const frontendRoutes = require('./routes/frontEndRoutes');
 const authRoutes = require('./routes/authroutes');
 const editorRoutes = require('./routes/editorRoutes');
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // mount routers
 app.use('/', itemRoutes);
+app.use('/', supplierRoutes);
 app.use('/', frontendRoutes);
 app.use('/', authRoutes);
 app.use('/editor', express.static(path.join(__dirname, 'public', 'editor')), editorRoutes);

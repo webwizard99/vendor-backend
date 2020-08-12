@@ -15,16 +15,22 @@ potionRouter.param('itemId', (req, res, next, id) => {
 });
 
 // GET route for all potions
-potionRouter.get('/potions', (req, res) => {
-  console.log('potions GET route reached...');
+potionRouter.get('/potions', async (req, res) => {
   Potion.belongsTo(Item);
-  Potion.findAll({
-    include: 
-      { model: Item }
-  })
-    .then(potion => {
-      res.status(200).send(potion)})
-    .catch(err => console.log(err));
+  let potions;
+  try {
+    potions = await Potion.findAll({
+      include: 
+        { model: Item }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
+  
+  res.status(200).send(potions);
+   
 });
 
 // POST and PUT route (due to composition of request through
