@@ -13,28 +13,28 @@ supplierRouter.get('/suppliers', async (req, res) => {
   
   let offerings;
   try {
-    const SupplierOfferings = Sequelize.define('SupplierOfferings', {
-      SupplierId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: Supplier,
-          key: 'id'
-        }
-      },
-      OfferingId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: Offering,
-          key: 'id'
-        }
-      }
-    });
-    Offering.belongsToOne(Supplier, { through: SupplierOfferings });
-    Supplier.belongsToMany(Offering, { through: SupplierOfferings });
+    // const SupplierOfferings = Sequelize.define('SupplierOfferings', {
+    //   SupplierId: {
+    //     type: DataTypes.INTEGER,
+    //     references: {
+    //       model: Supplier,
+    //       key: 'id'
+    //     }
+    //   },
+    //   OfferingId: {
+    //     type: DataTypes.INTEGER,
+    //     references: {
+    //       model: Offering,
+    //       key: 'id'
+    //     }
+    //   }
+    // });
+    Offering.belongsToOne(Supplier, { through: "SupplierOfferings" });
+    Supplier.belongsToMany(Offering, { through: "SupplierOfferings" });
     offerings = await Offering.findAll({
-      include: {
-        model: Supplier
-      }
+      // include: {
+      //   model: Supplier
+      // }
       // group: ['supplierId']
       // order: [
       //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
