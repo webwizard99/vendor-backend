@@ -19,7 +19,7 @@ supplierRouter.get('/suppliers', async (req, res) => {
       },
       group: 'supplierId',
       order: [
-        [ { model: Supplier, as: 'Supplier'}, 'id' ]
+        [ { model: models.Supplier, as: 'Supplier'}, 'id' ]
       ]
     });
   } catch (err) {
