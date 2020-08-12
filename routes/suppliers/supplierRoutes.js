@@ -10,23 +10,21 @@ const supplierRouter = express.Router();
 supplierRouter.get('/suppliers', async (req, res) => {
   console.log('suppliers GET route reached...');
   
-  // let suppliers;
-  // try {
-  //   Offering.belongsTo(Supplier);
-  //   suppliers = await Supplier.findAll({
-  //     include: {
-  //       model: Offering
-  //     }
-  //   })
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(400).send();
-  //   return;
-  // }
+  let suppliers;
+  try {
+    // Offering.belongsTo(Supplier);
+    suppliers = await Supplier.findAll({
+      // include: {
+      //   model: Offering
+      // }
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
 
-  // res.status(200).send(suppliers);
-
-  res.status(200).send('suppliers boi');
+  res.status(200).send(suppliers);
   
 })
 
