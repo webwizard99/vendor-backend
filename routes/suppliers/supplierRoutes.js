@@ -29,17 +29,17 @@ supplierRouter.get('/suppliers', async (req, res) => {
     //     }
     //   }
     // });
-    Offering.belongsToMany(Supplier, { through: "SupplierOfferings" });
-    Supplier.belongsToMany(Offering, { through: "SupplierOfferings" });
-    offerings = await Offering.findAll(
-      // include: {
-      //   model: Supplier
-      // }
+    Supplier.hasMany(Offering);
+    Offering.belongsTo(Supplier);
+    offerings = await Offering.findAll({
+      include: {
+        model: Supplier
+      }
       // group: ['supplierId']
       // order: [
       //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
       // ]
-    );
+    });
   } catch (err) {
     console.log(err);
     res.status(400).send();
