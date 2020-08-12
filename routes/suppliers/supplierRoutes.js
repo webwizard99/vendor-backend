@@ -12,12 +12,12 @@ supplierRouter.get('/suppliers', async (req, res) => {
   
   let offerings;
   try {
-    Offering.belongsTo(Supplier);
+    Offering.belongsToMany(Supplier);
     offerings = await Offering.findAll({
       include: {
         model: Supplier
-      },
-      group: ['supplierId']
+      }
+      // group: ['supplierId']
       // order: [
       //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
       // ]
