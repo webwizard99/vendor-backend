@@ -72,21 +72,20 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
 
   // handle PUT requests
   if (_METHOD === '_put') {
-
+    //validate inputs
     if (id !== null && typeof id !== 'number') {
       id = Number.parseInt(id);
     }
-
     if (itemId !== null && typeof itemId !== 'number') {
       itemId = Number.parseInt(itemId);
     }
-
     if (id === null || itemId === null) {
       console.log('Attempted PUT request without valid ID');
       res.status(400).redirect('/editor');
       return;
     }
 
+    // update Item record
     let updatedItem;
     try {
       updatedItem = await Item.update({
@@ -104,6 +103,7 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
       return;
     }
 
+    // update Weapon record
     let updatedWeapon;
     try {
       updatedWeapon = await Weapon.update({
@@ -166,7 +166,7 @@ weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
     return;
   }
 
-  // get Wewpon with ID sent to route
+  // get Weapon with ID sent to route
   let delWeapon;
   try {
     delWeapon = await Weapon.findAll({
@@ -202,7 +202,11 @@ weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
         res.status(400).send;
         return;
       }
+
+      res.status(200).send(true);
     });
+
+  
 });
 
 

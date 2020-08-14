@@ -205,6 +205,8 @@ armorRouter.delete('/armor/:itemId', authorization, async (req, res) => {
         res.status(400).send;
         return;
       }
+
+      res.status(200).send(true);
     });
 });
 

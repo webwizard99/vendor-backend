@@ -209,6 +209,8 @@ potionRouter.delete('/potion/:itemId', authorization, async (req, res) => {
         console.log(err);
         res.status(400).send();
       }
+
+      res.status(200).send(true);
     });
 
 });

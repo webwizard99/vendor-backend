@@ -19,36 +19,11 @@ supplierRouter.get('/suppliers', async (req, res) => {
         model: Offering
       }
     })
-    // offerings = await Offering.findAll({
-    //   include: {
-    //     model: Supplier
-    //   },
-    //   group: ['Offering', 'supplierId']
-    //   // order: [
-    //   //   [ { model: Supplier, as: 'Supplier'}, 'id' ]
-    //   // ]
-    // });
   } catch (err) {
     console.log(err);
     res.status(400).send();
     return;
   }
-
-  res.status(200).send(suppliers);
-
-  // let suppliers;
-  // try {
-  //   // Offering.belongsTo(Supplier);
-  //   suppliers = await Supplier.findAll({
-  //     // include: {
-  //     //   model: Offering
-  //     // }
-  //   })
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(400).send();
-  //   return;
-  // }
 
   res.status(200).send(suppliers);
   
