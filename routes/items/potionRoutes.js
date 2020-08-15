@@ -88,7 +88,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 
     if (id === null || itemId === null) {
       console.log('Attempted PUT request without valid ID');
-      res.status(400).redirect('/editor');
+      res.status(400).send();
       return;
     }
 
@@ -123,7 +123,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
       return;
     }
       
-    res.status(200).send(true);
+    res.status(200).send();
     return;
   }
 
@@ -154,7 +154,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).redirect('/editor'); 
+  res.status(200).send(); 
 
 });
 
