@@ -49,6 +49,8 @@ potionRouter.post('/potions', authorization, async (req, res) => {
   } = req.body;
 
   console.log(req.body);
+  console.log(req);
+  console.log(req.payload);
 
   // validate input types
   if (name && typeof name !== 'string') {
