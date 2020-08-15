@@ -48,10 +48,6 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     _METHOD
   } = req.body;
 
-  console.log(req.body);
-  console.log(req);
-  console.log(req.payload);
-
   // validate input types
   if (name && typeof name !== 'string') {
     name = name.toString();
@@ -127,7 +123,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
       return;
     }
       
-    res.status(200).redirect('/editor');
+    res.status(200).send(true);
     return;
   }
 
