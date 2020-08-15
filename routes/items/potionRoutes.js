@@ -123,7 +123,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
       return;
     }
       
-    res.status(200).send();
+    res.status(200).redirect('/editor');
     return;
   }
 
@@ -154,7 +154,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).send(); 
+  res.status(200).redirect('/editor'); 
 
 });
 
