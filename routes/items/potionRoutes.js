@@ -42,10 +42,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     details,
     type,
     level,
-    rarity,
-    id,
-    itemId,
-    _METHOD
+    rarity
   } = req.body;
 
   // validate input types
@@ -75,57 +72,57 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     return false;
   }
 
-  // handle PUT request
-  if (_METHOD === '_put') {
+  // // handle PUT request
+  // if (_METHOD === '_put') {
 
-    if (id !== null && typeof id !== 'number') {
-      id = Number.parseInt(id);
-    }
+  //   if (id !== null && typeof id !== 'number') {
+  //     id = Number.parseInt(id);
+  //   }
 
-    if (itemId !== null && typeof itemId !== 'number') {
-      itemId = Number.parseInt(itemId);
-    }
+  //   if (itemId !== null && typeof itemId !== 'number') {
+  //     itemId = Number.parseInt(itemId);
+  //   }
 
-    if (id === null || itemId === null) {
-      console.log('Attempted PUT request without valid ID');
-      res.status(400).send();
-      return;
-    }
+  //   if (id === null || itemId === null) {
+  //     console.log('Attempted PUT request without valid ID');
+  //     res.status(400).send();
+  //     return;
+  //   }
 
-    let updatedItem;
-    try {
-      updatedItem = await Item.update({
-        name,
-        type: itemTypes.potion,
-        value,
-        details,
-        rarity
-    }, { where: {
-      id: itemId
-    }});
-    } catch(err) {
-      console.log(err);
-      res.status(400).send();
-      return;
-    }
+  //   let updatedItem;
+  //   try {
+  //     updatedItem = await Item.update({
+  //       name,
+  //       type: itemTypes.potion,
+  //       value,
+  //       details,
+  //       rarity
+  //   }, { where: {
+  //     id: itemId
+  //   }});
+  //   } catch(err) {
+  //     console.log(err);
+  //     res.status(400).send();
+  //     return;
+  //   }
 
-    let updatedPotion;
-    try {
-      updatedPotion = await Potion.update({
-        type,
-        level
-      }, { where: {
-        id: id
-      }});
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-      return;
-    }
+  //   let updatedPotion;
+  //   try {
+  //     updatedPotion = await Potion.update({
+  //       type,
+  //       level
+  //     }, { where: {
+  //       id: id
+  //     }});
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(400).send();
+  //     return;
+  //   }
       
-    res.status(200).send(true);
-    return;
-  }
+  //   res.status(200).send(true);
+  //   return;
+  // }
 
   // attempt to create a new Item
   let newItem;
@@ -158,10 +155,97 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 
 });
 
+potionRouter.put('/potions', authorization, async (req, res) => {
+  let {
+    name,
+    value,
+    details,
+    type,
+    level,
+    rarity,
+    id,
+    itemId
+  } = req.body;
+
+  // validate input types
+  if (name && typeof name !== 'string') {
+    name = name.toString();
+  }
+  if (value && typeof value !== 'number') {
+    value = Number.parseInt(value);
+  }
+  if (details && typeof details !== 'string') {
+    details = details.toString();
+  }
+  if (type && typeof type !== 'string') {
+    type = type.toString();
+  }
+  if (level && typeof level !== 'number') {
+    level = Number.parseInt(level);
+  }
+
+  if (rarity && typeof rarity !== 'number') {
+    rarity = Number.parseInt(rarity);
+  }
+  // reject request if missing a field
+  if (!name || !value || !type || !level || !rarity || !potionTypes[type]) {
+    console.log('potion post request missing field');
+    res.status(400).send();
+    return false;
+  }
+
+  if (id !== null && typeof id !== 'number') {
+    id = Number.parseInt(id);
+  }
+
+  if (itemId !== null && typeof itemId !== 'number') {
+    itemId = Number.parseInt(itemId);
+  }
+
+  if (id === null || itemId === null) {
+    console.log('Attempted PUT request without valid ID');
+    res.status(400).send();
+    return;
+  }
+
+  let updatedItem;
+  try {
+    updatedItem = await Item.update({
+      name,
+      type: itemTypes.potion,
+      value,
+      details,
+      rarity
+  }, { where: {
+    id: itemId
+  }});
+  } catch(err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
+
+  let updatedPotion;
+  try {
+    updatedPotion = await Potion.update({
+      type,
+      level
+    }, { where: {
+      id: id
+    }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+    return;
+  }
+    
+  res.status(200).send(true);
+  return;
+})
+
 // DELETE route for potions
 potionRouter.delete('/potion/:itemId', authorization, async (req, res) => {
   let id = req.id;
-  console.log(`id: ${id}`);
 
   // Validate data
   if (id && typeof id != 'number') {
