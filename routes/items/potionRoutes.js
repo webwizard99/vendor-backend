@@ -33,8 +33,7 @@ potionRouter.get('/potions', async (req, res) => {
    
 });
 
-// POST and PUT route (due to composition of request through
-// HTML form only allowing POST request) for potions
+// handle potion POST request
 potionRouter.post('/potions', authorization, async (req, res) => {
   let {
     name,
@@ -72,58 +71,6 @@ potionRouter.post('/potions', authorization, async (req, res) => {
     return false;
   }
 
-  // // handle PUT request
-  // if (_METHOD === '_put') {
-
-  //   if (id !== null && typeof id !== 'number') {
-  //     id = Number.parseInt(id);
-  //   }
-
-  //   if (itemId !== null && typeof itemId !== 'number') {
-  //     itemId = Number.parseInt(itemId);
-  //   }
-
-  //   if (id === null || itemId === null) {
-  //     console.log('Attempted PUT request without valid ID');
-  //     res.status(400).send();
-  //     return;
-  //   }
-
-  //   let updatedItem;
-  //   try {
-  //     updatedItem = await Item.update({
-  //       name,
-  //       type: itemTypes.potion,
-  //       value,
-  //       details,
-  //       rarity
-  //   }, { where: {
-  //     id: itemId
-  //   }});
-  //   } catch(err) {
-  //     console.log(err);
-  //     res.status(400).send();
-  //     return;
-  //   }
-
-  //   let updatedPotion;
-  //   try {
-  //     updatedPotion = await Potion.update({
-  //       type,
-  //       level
-  //     }, { where: {
-  //       id: id
-  //     }});
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(400).send();
-  //     return;
-  //   }
-      
-  //   res.status(200).send(true);
-  //   return;
-  // }
-
   // attempt to create a new Item
   let newItem;
   try {
@@ -155,6 +102,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 
 });
 
+// handle potion PUT request
 potionRouter.put('/potions', authorization, async (req, res) => {
   let {
     name,

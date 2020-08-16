@@ -28,8 +28,7 @@ weaponRouter.get('/weapons', async (req, res) => {
   res.status(200).send(allWeapons);
 });
 
-// POST and PUT route (due to composition of request through
-// HTML form only allowing POST request) for weapons
+// handle weapon POST request
 weaponRouter.post('/weapons', authorization, async (req, res) => {
   let {
     name,
@@ -37,10 +36,7 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
     details,
     rarity,
     level,
-    damage,
-    id,
-    itemId,
-    _METHOD
+    damage
   } = req.body;
 
   // validate input types
@@ -66,60 +62,8 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
   // reject request if missing a field
   if (!name || !value || !rarity || !level || !damage) {
     console.log('weapon post request missing field');
-    res.status(400).send();
+    res.status(400).send(false);
     return false;
-  }
-
-  // handle PUT requests
-  if (_METHOD === '_put') {
-    //validate inputs
-    if (id !== null && typeof id !== 'number') {
-      id = Number.parseInt(id);
-    }
-    if (itemId !== null && typeof itemId !== 'number') {
-      itemId = Number.parseInt(itemId);
-    }
-    if (id === null || itemId === null) {
-      console.log('Attempted PUT request without valid ID');
-      res.status(400).redirect('/editor');
-      return;
-    }
-
-    // update Item record
-    let updatedItem;
-    try {
-      updatedItem = await Item.update({
-        name,
-        type: itemTypes.weapon,
-        value,
-        details,
-        rarity
-      }, { where: {
-        id: itemId
-      }});
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-      return;
-    }
-
-    // update Weapon record
-    let updatedWeapon;
-    try {
-      updatedWeapon = await Weapon.update({
-        level,
-        damage
-      }, { where: {
-        id: id
-      }});
-    } catch (err) {
-      console.log(err);
-      res.status(400).send();
-      return;
-    }
-
-    res.status(200).redirect('/editor');
-    return;
   }
 
   // attempt to create a new item
@@ -149,7 +93,97 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).redirect('/editor');
+  res.status(200).send(true);
+});
+
+// handle weapon PUT request
+weaponRouter.put('/weapons', authorization, async (req, res) => {
+  let {
+    name,
+    value,
+    details,
+    rarity,
+    level,
+    damage,
+    id,
+    itemId
+  } = req.body;
+
+  // validate input types
+  if (name && typeof name !== 'string') {
+    name = name.toString();
+  }
+  if (value && typeof value !== 'number') {
+    value = Number.parseInt(value);
+  }
+  if (details && typeof details !== 'string') {
+    details = details.toString();
+  }
+  if (rarity && typeof rarity !== 'number') {
+    rarity = Number.parseInt(rarity);
+  }
+  if (level && typeof level !== 'number') {
+    level = Number.parseInt(level);
+  }
+  if (damage && typeof damage !== 'number') {
+    damage = Number.parseInt(damage);
+  }
+
+  // reject request if missing a field
+  if (!name || !value || !rarity || !level || !damage) {
+    console.log('weapon put request missing field');
+    res.status(400).send(false);
+    return false;
+  }
+
+  //validate inputs
+  if (id !== null && typeof id !== 'number') {
+    id = Number.parseInt(id);
+  }
+  if (itemId !== null && typeof itemId !== 'number') {
+    itemId = Number.parseInt(itemId);
+  }
+  if (id === null || itemId === null) {
+    console.log('Attempted PUT request without valid ID');
+    res.status(400).send(false);
+    return;
+  }
+
+  // update Item record
+  let updatedItem;
+  try {
+    updatedItem = await Item.update({
+      name,
+      type: itemTypes.weapon,
+      value,
+      details,
+      rarity
+    }, { where: {
+      id: itemId
+    }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  // update Weapon record
+  let updatedWeapon;
+  try {
+    updatedWeapon = await Weapon.update({
+      level,
+      damage
+    }, { where: {
+      id: id
+    }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(true);
+  return;
 });
 
 weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
