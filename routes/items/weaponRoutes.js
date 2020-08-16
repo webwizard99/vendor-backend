@@ -29,7 +29,7 @@ weaponRouter.get('/weapons', async (req, res) => {
 });
 
 // handle weapon POST request
-weaponRouter.post('/weapons', authorization, async (req, res) => {
+weaponRouter.post('/weapon', authorization, async (req, res) => {
   let {
     name,
     value,
@@ -97,7 +97,7 @@ weaponRouter.post('/weapons', authorization, async (req, res) => {
 });
 
 // handle weapon PUT request
-weaponRouter.put('/weapons', authorization, async (req, res) => {
+weaponRouter.put('/weapon', authorization, async (req, res) => {
   let {
     name,
     value,

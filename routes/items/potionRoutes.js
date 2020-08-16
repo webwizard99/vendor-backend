@@ -34,7 +34,7 @@ potionRouter.get('/potions', async (req, res) => {
 });
 
 // handle potion POST request
-potionRouter.post('/potions', authorization, async (req, res) => {
+potionRouter.post('/potion', authorization, async (req, res) => {
   let {
     name,
     value,
@@ -103,7 +103,7 @@ potionRouter.post('/potions', authorization, async (req, res) => {
 });
 
 // handle potion PUT request
-potionRouter.put('/potions', authorization, async (req, res) => {
+potionRouter.put('/potion', authorization, async (req, res) => {
   let {
     name,
     value,
