@@ -34,9 +34,6 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     newIndexes
   } = req.body;
 
-  console.log(typeof newIndexes);
-  console.log(`newIndexes: ${newIndexes} ........`);
-
   // validate input types
   if (name && typeof name !== 'string') {
     name = name.toString();
@@ -77,8 +74,6 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
   for (let index of newIndexes) {
     let offeringType = req.body[`new-offering-${index}-type`];
     let offeringMarkup = req.body[`new-offering-${index}-markup`];
-    console.log(`offeringType: ${offeringType}`);
-    console.log(`offeringMarkup: ${offeringMarkup}`)
 
     // validate inputs
     if (offeringType && typeof offeringType !== 'string') {
