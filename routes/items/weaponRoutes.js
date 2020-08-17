@@ -93,7 +93,11 @@ weaponRouter.post('/weapon', authorization, async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).send(newWeapon.id);
+  Promise.allSettled(newWeapon)
+    .then( async (result) => {
+      res.status(200).send(newWeapon.id);
+    });
+  
 });
 
 // handle weapon PUT request
