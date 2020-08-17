@@ -84,7 +84,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     }
 
     try {
-      newSupplier.addOffering({
+      const thisOffering = await newSupplier.addOffering({
         type: offeringType,
         markup: offeringMarkup
       });
