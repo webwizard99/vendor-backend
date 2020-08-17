@@ -94,7 +94,7 @@ armorRouter.post('/armor', authorization, async (req, res) => {
     console.log(err);
   }
 
-  res.status(200).send(newArmor.id);
+  res.status(200).send(true);
 });
 
 
