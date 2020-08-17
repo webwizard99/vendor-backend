@@ -34,6 +34,8 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     newIndexes
   } = req.body;
 
+  console.log(`newIndexes: ${newIndexes} ........`);
+
   // validate input types
   if (name && typeof name !== 'string') {
     name = name.toString();
@@ -97,6 +99,11 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
       console.log(err);
       res.status(400);
     }
+
+    Promise.allSettled(newOffering)
+      .then(async (result) => {
+
+      });
 
     // try {
     //   newSupplier.addOffering(newOffering);
