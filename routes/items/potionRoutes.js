@@ -83,6 +83,8 @@ potionRouter.post('/potion', authorization, async (req, res) => {
     });
   } catch(err) {
     console.log(err);
+    res.status(400).send(false);
+    return
   }
 
   // capture item id for foreign key to create Potion
@@ -96,6 +98,8 @@ potionRouter.post('/potion', authorization, async (req, res) => {
     });
   } catch(err) {
     console.log(err);
+    res.status(400).send(false);
+    return;
   }
 
   res.status(200).redirect('/editor'); 
