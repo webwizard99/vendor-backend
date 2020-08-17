@@ -34,6 +34,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     newIndexes
   } = req.body;
 
+  console.log(typeof newIndexes);
   console.log(`newIndexes: ${newIndexes} ........`);
 
   // validate input types
@@ -46,6 +47,10 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     console.log('supplier post request missing field');
     res.status(400).send();
     return false;
+  }
+
+  if (typeof newIndexes === 'string') {
+    newIndexes = newIndexes.split(',')
   }
 
   Supplier.hasMany(Offering);
@@ -68,7 +73,6 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     return;
   }
 
-  console.log(`newIndexes: ${newIndexes} ........`);
   // attempt to add all new offerings sent with POST request
   for (let index of newIndexes) {
     let offeringType = req.body[`new-offering-${index}-type`];
@@ -100,10 +104,10 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
       res.status(400);
     }
 
-    Promise.allSettled(newOffering)
-      .then(async (result) => {
+    // Promise.allSettled(newOffering)
+    //   .then(async (result) => {
 
-      });
+    //   });
 
     // try {
     //   newSupplier.addOffering(newOffering);
