@@ -112,7 +112,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     // }
   }
 
-  res.status(200).send(true);
+  res.status(200).send(newSupplier.id);
 })
 
 module.exports = supplierRouter;

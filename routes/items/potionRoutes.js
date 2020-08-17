@@ -102,7 +102,7 @@ potionRouter.post('/potion', authorization, async (req, res) => {
     return;
   }
 
-  res.status(200).redirect('/editor'); 
+  res.status(200).send(newPotion.id); 
 
 });
 
