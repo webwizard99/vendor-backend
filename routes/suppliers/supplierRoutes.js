@@ -66,10 +66,13 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     return;
   }
 
+  console.log(newIndexes);
   // attempt to add all new offerings sent with POST request
   for (index of newIndexes) {
     let offeringType = req.body[`new-offering-${index}-type`];
     let offeringMarkup = req.body[`new-offering-${index}-markup`];
+    console.log(`offeringType: ${offeringType}`);
+    console.log(`offeringMarkup: ${offeringMarkup}`)
 
     // validate inputs
     if (offeringType && typeof offeringType !== 'string') {
@@ -83,15 +86,24 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
       res.status(400).send();
     }
 
+    let newOffering;
     try {
-      const thisOffering = await newSupplier.addOffering({
+      newOffering = await Offering.create({
         type: offeringType,
-        markup: offeringMarkup
+        markup: offeringMarkup,
+        supplierId: newSupplier.id
       });
     } catch (err) {
       console.log(err);
       res.status(400);
-    } 
+    }
+
+    // try {
+    //   newSupplier.addOffering(newOffering);
+    // } catch(err) {
+    //   console.log(err);
+    //   res.status(400);
+    // }
   }
 
   res.status(200).send(true);
