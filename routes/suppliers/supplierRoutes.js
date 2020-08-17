@@ -66,9 +66,9 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     return;
   }
 
-  console.log(newIndexes);
+  console.log(`newIndexes: ${newIndexes} ........`);
   // attempt to add all new offerings sent with POST request
-  for (index of newIndexes) {
+  for (let index of newIndexes) {
     let offeringType = req.body[`new-offering-${index}-type`];
     let offeringMarkup = req.body[`new-offering-${index}-markup`];
     console.log(`offeringType: ${offeringType}`);
