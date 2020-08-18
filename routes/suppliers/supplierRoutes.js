@@ -108,6 +108,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
 supplierRouter.put('/supplier', authorization, async (req, res) => {
   let {
     name,
+    id,
     existingIds,
     deletedIds,
     newIndexes
@@ -144,7 +145,9 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
   try {
     updatedSupplier = await Supplier.update({
       name: name
-    });
+    }, { where: {
+      id: id
+    }});
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
