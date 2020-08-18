@@ -173,7 +173,7 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
   if (deletedIds.length > 0) {
     for (let delId of deletedIds) {
       // remove any ids to be deleted from existing list
-      if (existingIds.include(delId)) {
+      if (existingIds.includes(delId)) {
         let delIndex = existingIds.indexOf(delId);
         existingIds.splice(delIndex);
       }
