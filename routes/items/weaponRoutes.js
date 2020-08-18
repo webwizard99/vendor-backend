@@ -225,7 +225,7 @@ weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
         Weapon.destroy({ where: { id: id } });
       } catch (err) {
         console.log(err);
-        res.status(400).send;
+        res.status(400).send(false);
         return;
       }
 
@@ -233,7 +233,7 @@ weaponRouter.delete('/weapon/:itemId', authorization, async (req, res) => {
         Item.destroy({ where: { id: itemId } });
       } catch (err) {
         console.log(err);
-        res.status(400).send;
+        res.status(400).send(false);
         return;
       }
 

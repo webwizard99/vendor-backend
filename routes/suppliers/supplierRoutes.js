@@ -7,6 +7,11 @@ const authorization = require('../../middleware/authorization');
 
 const supplierRouter = express.Router();
 
+supplierRouter.param('supplierId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 supplierRouter.get('/suppliers', async (req, res) => {
   
   let suppliers;
@@ -259,8 +264,33 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
 
 });
 
-supplierRouter.delete('/supplier', authorization, async (req, res) => {
-  console.log('supplier delete route reached.');
+supplierRouter.delete('/supplier/:supplierId', authorization, async (req, res) => {
+  let id = req.id;
+
+  // Validate data
+  if (id && typeof id != 'number') {
+    id = Number.parseInt(id);
+  }
+
+  // Exit if no valid ID sent
+  if (!id) {
+    res.status(400).send(false);
+    return;
+  }
+
+  // associate models
+  Supplier.hasMany(Offering);
+  Offering.belongsTo(Supplier);
+
+  try {
+    Supplier.destroy({ where: { id: id }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(true);
 })
 
 module.exports = supplierRouter;
