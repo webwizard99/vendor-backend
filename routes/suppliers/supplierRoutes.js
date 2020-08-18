@@ -47,6 +47,9 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
   }
 
   if (typeof newIndexes === 'string') {
+    if (newIndexes.length === 1) {
+      newIndexes = Array.from(Number.parseInt(newIndexes));
+    }
     newIndexes = newIndexes.split(',')
   }
 
@@ -127,13 +130,25 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
   }
 
   if (typeof existingIds === 'string') {
-    existingIds = existingIds.split(',');
+    if (existingIds.length === 1) {
+      existingIds = Array.from(Number.parseInt(existingIds));
+    } else {
+      existingIds = existingIds.split(',');
+    }
   }
   if (typeof deletedIds === 'string' && deletedIds !== '') {
-    deletedIds = deletedIds.split(',');
+    if (deletedIds.length === 1) {
+      deletedIds = Array.from(Number.parseInt(deletedIds));
+    } else {
+      deletedIds = deletedIds.split(',');
+    }
   }
   if (typeof newIndexes === 'string' && newIndexes !== '') {
-    newIndexes = newIndexes.split(',');
+    if (newIndexes.length === 1) {
+      newIndexes = Array.from(Number.parseInt(newIndexes));
+    } else {
+      newIndexes = newIndexes.split(',');
+    }
   }
 
   // associate models
