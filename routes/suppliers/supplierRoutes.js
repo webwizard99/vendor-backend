@@ -232,7 +232,7 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
       newOffering = await Offering.create({
         type: offeringType,
         markup: offeringMarkup,
-        supplierId: updatedSupplier.id
+        supplierId: id
       });
     } catch (err) {
       console.log(err);
