@@ -105,7 +105,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
 
 // Route to for suppliers PUT and PUT, POST, and DELETE of associated
 // offerings
-supplierRouter.put('supplier', authorization, async(req, res) => {
+supplierRouter.put('/supplier', authorization, async (req, res) => {
   let {
     name,
     existingIds,
