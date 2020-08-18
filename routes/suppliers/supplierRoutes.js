@@ -7,11 +7,6 @@ const authorization = require('../../middleware/authorization');
 
 const supplierRouter = express.Router();
 
-supplierRouter.param('supplierId', (req, res, next, id) => {
-  req.id = id;
-  next();
-});
-
 supplierRouter.get('/suppliers', async (req, res) => {
   
   let suppliers;
@@ -90,7 +85,7 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     if (offeringMarkup && typeof offeringMarkup !== 'number') {
       offeringMarkup = Number.parseInt(offeringMarkup);
     }
-    if (!offeringType || !offeringMarkup) {
+    if (!offeringType || !offeringMarkup || !itemTypes[offeringType]) {
       console.log('attempted to create offering with missing field');
       res.status(400).send();
     }
@@ -205,7 +200,7 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
       if (offeringMarkup && typeof offeringMarkup !== 'number') {
         offeringMarkup = Number.parseInt(offeringMarkup);
       }
-      if (!offeringType || !offeringMarkup) {
+      if (!offeringType || !offeringMarkup || !itemTypes[offeringType]) {
         console.log('attempted to update offering with missing field');
         res.status(400).send();
       }
@@ -264,8 +259,10 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
 
 });
 
-supplierRouter.delete('/supplier/:supplierId', authorization, async (req, res) => {
-  let id = req.id;
+supplierRouter.delete('/supplier', authorization, async (req, res) => {
+  let {
+    id, offeringIds: deletedIds
+  } = req.body;
 
   // Validate data
   if (id && typeof id != 'number') {
@@ -278,6 +275,15 @@ supplierRouter.delete('/supplier/:supplierId', authorization, async (req, res) =
     return;
   }
 
+  // validate and convert offering ids
+  if (typeof deletedIds === 'string' && deletedIds !== '') {
+    if (deletedIds.length === 1) {
+      deletedIds = Array.from(Number.parseInt(deletedIds));
+    } else {
+      deletedIds = deletedIds.split(',');
+    }
+  }
+
   // associate models
   Supplier.hasMany(Offering);
   Offering.belongsTo(Supplier);
@@ -288,6 +294,18 @@ supplierRouter.delete('/supplier/:supplierId', authorization, async (req, res) =
     console.log(err);
     res.status(400).send(false);
     return;
+  }
+
+  // handle existing offerings to be deleted
+  if (deletedIds.length > 0) {
+    for (let delId of deletedIds) {
+      // delete offering from database
+      try {
+        Offering.destroy({ where: { id: delId }});
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   res.status(200).send(true);
