@@ -241,4 +241,8 @@ supplierRouter.put('supplier', authorization, async(req, res) => {
 
 });
 
+supplierRouter.delete('/supplier', authorization, async (req, res) => {
+  console.log('supplier delete route reached.');
+})
+
 module.exports = supplierRouter;
