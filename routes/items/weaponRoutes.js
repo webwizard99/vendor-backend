@@ -31,7 +31,7 @@ weaponRouter.get('/weapons', async (req, res) => {
 });
 
 // GET route for weapons in level range
-weaponRouter.get('/weapons-in-level-range/:min-level/:max-level', async (req, res) => {
+weaponRouter.get('/weapons-in-level-range', async (req, res) => {
   Weapon.belongsTo(Item);
   const minLevel = req.query['min-level'];
   const maxLevel = req.query['max-level'];
