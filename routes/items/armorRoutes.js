@@ -1,6 +1,7 @@
 const express = require('express');
 const Item = require('../../models/Item');
 const Armor = require('../../models/Armor');
+const { Op } = require('sequelize');
 
 const itemTypes = require('../../config/itemTypes');
 const authorization = require('../../middleware/authorization');
@@ -11,6 +12,16 @@ armorRouter.param('itemId', (req, res, next, id) => {
   req.id = id;
   next();
 });
+
+armorRouter.param('min-level', (req, res, next, level) => {
+  req.min_level = level;
+  next();
+});
+
+armorRouter.param('max-level', (req, res, next, level) => {
+  req.max_level = level;
+  next();
+})
 
 armorRouter.get('/armor', async (req, res) => {
   let allArmor;
@@ -27,6 +38,33 @@ armorRouter.get('/armor', async (req, res) => {
   }
 
   res.status(200).send(allArmor);
+});
+
+// GET route for armor in level range
+armorRouter.get('/armor-in-level-range/:min-level/:max-level', async (req, res) => {
+  Armor.belongsTo(Item);
+  const minLevel = req.min_level;
+  const maxLevel = req.max_level;
+  let armor;
+  try {
+    armor = await Armor.findAll({
+      include: {
+        model: Item
+      },
+      where: {
+        level: {
+          [Op.gte]: minLevel,
+          [Op.lte]: maxLevel
+        }
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    req.status(400).send(false);
+    return;
+  }
+
+  return armor;
 });
 
 // handle armor POST request

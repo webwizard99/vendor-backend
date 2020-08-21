@@ -284,6 +284,9 @@ supplierRouter.delete('/supplier', authorization, async (req, res) => {
     }
   }
 
+  console.log(deletedIds);
+  console.log(deletedIds.length);
+
   // associate models
   Supplier.hasMany(Offering);
   Offering.belongsTo(Supplier);
