@@ -13,16 +13,6 @@ armorRouter.param('itemId', (req, res, next, id) => {
   next();
 });
 
-armorRouter.param('min-level', (req, res, next, level) => {
-  req.min_level = level;
-  next();
-});
-
-armorRouter.param('max-level', (req, res, next, level) => {
-  req.max_level = level;
-  next();
-})
-
 armorRouter.get('/armor', async (req, res) => {
   let allArmor;
   try {
@@ -43,8 +33,8 @@ armorRouter.get('/armor', async (req, res) => {
 // GET route for armor in level range
 armorRouter.get('/armor-in-level-range/:min-level/:max-level', async (req, res) => {
   Armor.belongsTo(Item);
-  const minLevel = req.min_level;
-  const maxLevel = req.max_level;
+  const minLevel = req.query.min-level;
+  const maxLevel = req.query.max-level;
   let armor;
   try {
     armor = await Armor.findAll({

@@ -13,15 +13,6 @@ weaponRouter.param('itemId', (req, res, next, id) => {
   next();
 });
 
-weaponRouter.param('min-level', (req, res, next, level) => {
-  req.min_level = level;
-  next();
-});
-
-weaponRouter.param('max-level', (req, res, next, level) => {
-  req.max_level = level;
-});
-
 // GET route for all weapons
 weaponRouter.get('/weapons', async (req, res) => {
   let allWeapons;
@@ -42,8 +33,8 @@ weaponRouter.get('/weapons', async (req, res) => {
 // GET route for weapons in level range
 weaponRouter.get('/weapons-in-level-range/:min-level/:max-level', async (req, res) => {
   Weapon.belongsTo(Item);
-  const minLevel = req.min_level;
-  const maxLevel = req.max_level;
+  const minLevel = req.query.min-level;
+  const maxLevel = req.query.max-level;
   let weapons;
   try {
     weapons = await Weapon.findAll({
