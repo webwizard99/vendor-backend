@@ -53,7 +53,7 @@ potionRouter.get('/potions-in-level-range', async (req, res) => {
     res.status(400).send(false);
     return;
   }
-  return potions;
+  res.status(200).send(potions);
 })
 
 // handle potion POST request

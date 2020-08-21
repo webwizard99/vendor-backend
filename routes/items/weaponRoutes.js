@@ -53,7 +53,7 @@ weaponRouter.get('/weapons-in-level-range', async (req, res) => {
     res.status(400).send(false);
     return;
   }
-  return weapons;
+  res.status(200).send(weapons);
 })
 
 // handle weapon POST request

@@ -54,7 +54,7 @@ armorRouter.get('/armor-in-level-range', async (req, res) => {
     return;
   }
 
-  return armor;
+  res.status(200).send(armor);
 });
 
 // handle armor POST request
