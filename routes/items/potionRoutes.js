@@ -34,8 +34,8 @@ potionRouter.get('/potions', async (req, res) => {
 // GET route for potions in level range
 potionRouter.get('/potions-in-level-range', async (req, res) => {
   Potion.belongsTo(Item);
-  const minLevel = req.query.min-level;
-  const maxLevel = req.query.max-level;
+  const minLevel = req.query['min-level'];
+  const maxLevel = req.query['max-level'];
   let potions;
   try {
     potions = await Potion.findAll({
