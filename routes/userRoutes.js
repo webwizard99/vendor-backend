@@ -17,7 +17,7 @@ userRouter.put('/user', (req, res) => {
   if (nickname && typeof nickname !== 'string') {
     nickname = nickname.toString();
   }
-  if (import_nickname !== true && import_nickname !== false) {
+  if (import_nickname !== null && typeof import_nickname !== 'boolean') {
     import_nickname = false;
   }
   if (id === null) {
