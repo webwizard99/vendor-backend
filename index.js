@@ -16,6 +16,7 @@ const itemRoutes = require('./routes/items/itemRoutes');
 const supplierRoutes = require('./routes/suppliers/supplierRoutes');
 const frontendRoutes = require('./routes/frontEndRoutes');
 const authRoutes = require('./routes/authroutes');
+const userRoutes = require('./routes/userRoutes');
 const editorRoutes = require('./routes/editorRoutes');
 
 const app = express();
@@ -56,6 +57,7 @@ app.use('/', itemRoutes);
 app.use('/', supplierRoutes);
 app.use('/', frontendRoutes);
 app.use('/', authRoutes);
+app.use('/', userRoutes);
 app.use('/editor', express.static(path.join(__dirname, 'public', 'editor')), editorRoutes);
 
 app.listen(PORT);

@@ -10,6 +10,9 @@ const User = db.define('user', {
   },
   facebookId: {
     type: Sequelize.BIGINT
+  },
+  import_nickname: {
+    type: Sequelize.BOOLEAN
   }
 });
 
