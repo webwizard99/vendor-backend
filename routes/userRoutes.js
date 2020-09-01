@@ -18,7 +18,12 @@ userRouter.put('/user', (req, res) => {
     nickname = nickname.toString();
   }
   if (import_nickname !== null && typeof import_nickname !== 'boolean') {
-    import_nickname = false;
+    if (typeof import_nickname === 'string' && import_nickname.toLowerCase() === 'true') {
+      import_nickname = true;
+    } else {
+      import_nickname = false;
+    }
+    
   }
   if (id === null) {
     console.log('Attempted PUT request without valid ID');
