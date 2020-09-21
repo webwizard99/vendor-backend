@@ -11,13 +11,17 @@ const passport = require('passport');
 
 require('./services/passport');
 
-// route imports
+// architectural route imports
+const authRoutes = require('./routes/authroutes');
+const frontendRoutes = require('./routes/frontEndRoutes');
+const editorRoutes = require('./routes/editorRoutes');
+// item route imports
 const itemRoutes = require('./routes/items/itemRoutes');
 const supplierRoutes = require('./routes/suppliers/supplierRoutes');
-const frontendRoutes = require('./routes/frontEndRoutes');
-const authRoutes = require('./routes/authroutes');
+// profile imports
 const userRoutes = require('./routes/userRoutes');
-const editorRoutes = require('./routes/editorRoutes');
+// adventurer imports
+const behaviorRouter = require('./routes/npcs/behaviors/behaviorRoutes');
 
 const app = express();
 
@@ -52,12 +56,16 @@ app.set('view engine', '.hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(path.join(__dirname, 'public', 'editor')));
 
-// mount routers
+// mount architectural routers
+app.use('/', authRoutes);
+app.use('/', frontendRoutes);
+app.use('/editor', express.static(path.join(__dirname, 'public', 'editor')), editorRoutes);
+// mount item routes
 app.use('/', itemRoutes);
 app.use('/', supplierRoutes);
-app.use('/', frontendRoutes);
-app.use('/', authRoutes);
+// mount profile route
 app.use('/', userRoutes);
-app.use('/editor', express.static(path.join(__dirname, 'public', 'editor')), editorRoutes);
+// mount adventurer routes
+app.use('/', behaviorRouter);
 
 app.listen(PORT);
