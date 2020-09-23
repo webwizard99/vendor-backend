@@ -7,6 +7,11 @@ const authorization = require('../../../middleware/authorization');
 const validation = require('../../../utilities/validation');
 const behaviorRouter = express.Router();
 
+behaviorRouter.param(':behaviorId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 behaviorRouter.get('/town_behaviors', async (req, res) => {
   try {
     let allTownBehaviors = await TownBehavior.findAll();
@@ -186,6 +191,24 @@ behaviorRouter.put('/town_behavior', authorization, async (req, res) => {
   }
 
   res.status(200).send(true);
-})
+});
+
+behaviorRouter.delete('/town_behavior/:behaviorId', authorization, async (req, res) => {
+  let id = req.id;
+  id = validation.validateInteger(id);
+
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+  }
+
+  try {
+    TownBehavior.destroy({ where: { id: id }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
 
 module.exports = behaviorRouter;
