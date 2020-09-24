@@ -74,7 +74,7 @@ const DungeonBehavior = db.define('dungeon_behavior', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  check_monster_weaknesses: {
+  check_monster_weakness: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
