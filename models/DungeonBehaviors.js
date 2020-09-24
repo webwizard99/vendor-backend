@@ -53,6 +53,42 @@ const DungeonBehavior = db.define('dungeon_behavior', {
   try_for_level: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  rest: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  disarm_trap: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  avoid_trap: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  defend: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  attack: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  check_monster_weaknesses: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  fill_inventory: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  upgrade_inventory: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  prefer_weaker_monster: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 
