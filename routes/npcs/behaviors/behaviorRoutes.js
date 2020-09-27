@@ -416,4 +416,21 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
   res.status(200).send(true);
 });
 
+behaviorRouter.delete('/dungeon_behavior/:behaviorId', authorization, async (req, res) => {
+  let id = req.id;
+  id = validation.validateInteger(id);
+
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+  }
+
+  try {
+    DungeonBehavior.destroy({ where: { id: id }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+  }
+  res.status(200).send(true);
+});
+
 module.exports = behaviorRouter;
