@@ -21,7 +21,8 @@ const supplierRoutes = require('./routes/suppliers/supplierRoutes');
 // profile imports
 const userRoutes = require('./routes/userRoutes');
 // adventurer imports
-const behaviorRouter = require('./routes/npcs/behaviors/behaviorRoutes');
+const behaviorRoutes = require('./routes/npcs/behaviors/behaviorRoutes');
+const adventurerClassRoutes = require('./routes/npcs/adventurers/classRoutes');
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use('/', supplierRoutes);
 // mount profile route
 app.use('/', userRoutes);
 // mount adventurer routes
-app.use('/', behaviorRouter);
+app.use('/', behaviorRoutes);
+app.use('/', adventurerClassRoutes);
 
 app.listen(PORT);
