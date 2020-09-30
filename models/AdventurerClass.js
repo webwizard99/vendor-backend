@@ -42,4 +42,6 @@ const AdventurerClass = db.define('adventurer_class', {
     type: Sequelize.INTEGER,
     allowNull: false
   }
-})
+});
+
+module.exports = AdventurerClass;
