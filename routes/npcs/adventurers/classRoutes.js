@@ -4,7 +4,7 @@ const AdventurerClass = require('../../../models/AdventurerClass');
 // utility imports
 const classRouter = express.Router();
 
-classRouter.get('adventurer_classes', async (req, res) => {
+classRouter.get('/adventurer_classes', async (req, res) => {
   try {
     let allAdventurerClasses = await AdventurerClass.findAll();
     res.status(200).send(allAdventurerClasses);
