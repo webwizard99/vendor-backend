@@ -1,0 +1,9 @@
+bargaining: (buy_potion, sell_potion, buy_weapon, sell_weapon, buy_armor, sell_armor)
+perception: (check_for_traps, avoid_traps, search_for_treasure, flee_encounter, check_monster_weakness)
+artifacts: (use_potion, disarm_trap, search_for_treasure)
+traps: (check_for_traps, set_trap, disarm_trap)
+agility: (disarm_trap, dodge)
+tactics: 
+martial_weapons: 
+armor:
+anatomy:
