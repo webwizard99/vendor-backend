@@ -7,6 +7,11 @@ const validation = require('../../../utilities/validation');
 
 const classRouter = express.Router();
 
+classRouter.param(':classId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 classRouter.get('/adventurer_classes', async (req, res) => {
   try {
     let allAdventurerClasses = await AdventurerClass.findAll();
@@ -138,5 +143,23 @@ classRouter.put('/adventurer_class', authorization, async (req, res) => {
   }
   res.status(200).send(true);
 });
+
+classRouter.delete('/adventurer_class/:classId', authorization, async (req, res) => {
+  let id = req.id;
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+    return;
+  }
+  id = validation.validateInteger(id);
+
+  try {
+    AdventurerClass.destroy({ where: { id: id }});
+  } catch (err) {
+    console.log(err);
+    res.status.send(false);
+    return;
+  }
+  res.status(200).send(true);
+})
 
 module.exports = classRouter;

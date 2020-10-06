@@ -131,6 +131,11 @@ behaviorRouter.put('/town_behavior', authorization, async (req, res) => {
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
+  if (id === undefined || id === null) {
+    console.log('Attempted PUT request for town behavior without valid ID');
+    res.status(400).send(false);
+    return;
+  }
   id = validation.validateInteger(id);
   buy_potion = validation.validateInteger(buy_potion);
   sell_potion = validation.validateInteger(sell_potion);
@@ -154,13 +159,7 @@ behaviorRouter.put('/town_behavior', authorization, async (req, res) => {
     use_tavern === undefined || retire === undefined || emigrate === undefined || garrison_wall === undefined) {
       console.log('town behavior put request missing field');
       res.status(400).send(false);
-      return false;
-  }
-
-  if (id === undefined || id === null) {
-    console.log('Attempted PUT request for town behavior without valid ID');
-    res.status(400).send(false);
-    return;
+      return;
   }
   
   try {
@@ -195,11 +194,11 @@ behaviorRouter.put('/town_behavior', authorization, async (req, res) => {
 
 behaviorRouter.delete('/town_behavior/:behaviorId', authorization, async (req, res) => {
   let id = req.id;
-  id = validation.validateInteger(id);
-
   if (id === null || id === undefined) {
     res.status(400).send(false);
+    return;
   }
+  id = validation.validateInteger(id);
 
   try {
     TownBehavior.destroy({ where: { id: id }});
@@ -339,6 +338,11 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
+  if (id === undefined || id === null) {
+    console.log('Attempted PUT request for dungeon behavior without id');
+    res.status(400).send(false);
+    return;
+  }
   id = validation.validateInteger(id);
   advance_tile = validation.validateInteger(advance_tile);
   conserve_health = validation.validateInteger(conserve_health);
@@ -373,11 +377,6 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
       console.log('dungeon behavior put request missing field');
       res.status(400).send(false);
       return;
-  }
-
-  if (id === undefined || id === null) {
-    console.log('Attempted PUT request for dungeon behavior without id');
-    res.status(400).send(false);
   }
 
   try {
@@ -418,17 +417,20 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
 
 behaviorRouter.delete('/dungeon_behavior/:behaviorId', authorization, async (req, res) => {
   let id = req.id;
-  id = validation.validateInteger(id);
-
   if (id === null || id === undefined) {
     res.status(400).send(false);
+    return;
   }
+  id = validation.validateInteger(id);
+
+  
 
   try {
     DungeonBehavior.destroy({ where: { id: id }});
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
+    return;
   }
   res.status(200).send(true);
 });
