@@ -15,6 +15,6 @@ adventurerRouter.get('/adventurers', async (req, res) => {
     console.log(err);
     res.status(400).send(false);
   }
-})
+});
 
 module.exports = adventurerRouter;
