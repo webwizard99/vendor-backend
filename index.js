@@ -23,6 +23,7 @@ const userRoutes = require('./routes/userRoutes');
 // adventurer imports
 const behaviorRoutes = require('./routes/npcs/behaviors/behaviorRoutes');
 const adventurerClassRoutes = require('./routes/npcs/adventurers/classRoutes');
+const adventurerRoutes = require('./routes/npcs/adventurers/adventurerRoutes');
 
 const app = express();
 
@@ -69,5 +70,6 @@ app.use('/', userRoutes);
 // mount adventurer routes
 app.use('/', behaviorRoutes);
 app.use('/', adventurerClassRoutes);
+app.use('/', adventurerRoutes);
 
 app.listen(PORT);
