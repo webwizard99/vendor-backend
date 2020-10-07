@@ -7,4 +7,14 @@ const validation = require('../../../utilities/validation');
 
 const adventurerRouter = express.Router();
 
+adventurerRouter.get('/adventurers', async (req, res) => {
+  try {
+    let allAdventurers = await Adventurer.findAll();
+    res.status(200).send(allAdventurers);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+  }
+})
+
 module.exports = adventurerRouter;
