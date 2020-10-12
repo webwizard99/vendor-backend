@@ -99,8 +99,9 @@ classRouter.put('/adventurer_class', authorization, async (req, res) => {
     name = name.toString();
   }
   if (id === undefined || id === null) {
-    console.log('Attempted PUT request for town behavior without valid id');
-
+    console.log('Attempted PUT request for adventurer class without valid id');
+    res.status(400).send(false);
+    return;
   }
   id = validation.validateInteger(id);
   bargaining = validation.validateInteger(bargaining);
