@@ -17,7 +17,7 @@ adventurerRouter.get('/adventurers', async (req, res) => {
   }
 });
 
-adventurerRouter.put('/adventurer', authorization, async (req, res) => {
+adventurerRouter.post('/adventurer', authorization, async (req, res) => {
   let {
     name,
     strength,
