@@ -1,5 +1,9 @@
 const express = require('express');
 const Adventurer = require('../../../models/Adventurer');
+const TownBehavior = require('../../../models/TownBehaviors');
+const DungeonBehavior = require('../../../models/DungeonBehaviors');
+const AdventurerClass = require('../../../models/AdventurerClass');
+
 // middleware imports
 const authorization = require('../../../middleware/authorization');
 // utility imports
@@ -19,6 +23,26 @@ adventurerRouter.get('/adventurers', async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
+  }
+});
+
+adventurerRouter.get('/adventurers-full', async (req, res) => {
+  try {
+    Adventurer.hasOne(TownBehavior);
+    Adventurer.hasOne(DungeonBehavior);
+    Adventurer.hasOne(AdventurerClass);
+    let adventurers = await Adventurer.findAll({
+      include: {
+        model: TownBehavior,
+        model: DungeonBehavior,
+        model: AdventurerClass
+      }
+    });
+    res.status(200).send(adventurers);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
   }
 });
 
