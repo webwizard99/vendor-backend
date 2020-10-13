@@ -7,6 +7,11 @@ const validation = require('../../../utilities/validation');
 
 const adventurerRouter = express.Router();
 
+adventurerRouter.param(':adventurerId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 adventurerRouter.get('/adventurers', async (req, res) => {
   try {
     let allAdventurers = await Adventurer.findAll();
@@ -128,6 +133,24 @@ adventurerRouter.put('/adventurer', authorization, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
+
+adventurerRouter.delete('/adventurer/:adventurerId', authorization, async (req, res) => {
+  let id = req.id;
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+    return;
+  }
+  id = validation.validateInteger(id);
+
+  try {
+    Adventurer.destroy({ where : { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status.send(false);
     return;
   }
   res.status(200).send(true);
