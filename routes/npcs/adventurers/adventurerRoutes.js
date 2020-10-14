@@ -29,11 +29,17 @@ adventurerRouter.get('/adventurers', async (req, res) => {
 adventurerRouter.get('/adventurers-full', async (req, res) => {
   try {
     Adventurer.hasOne(TownBehavior);
-    TownBehavior.belongsTo(Adventurer);
+    TownBehavior.hasMany(Adventurer, {
+      foreignKey: 'town_behavior_id'
+    });
     Adventurer.hasOne(DungeonBehavior);
-    DungeonBehavior.belongsTo(Adventurer);
+    DungeonBehavior.hasMany(Adventurer, {
+      foreignKey: 'dungeon_behavior_id'
+    });
     Adventurer.hasOne(AdventurerClass);
-    AdventurerClass.belongsTo(Adventurer);
+    AdventurerClass.hasMany(Adventurer, {
+      foreignKey: 'adventurer_class_id'
+    });
     let adventurers = await Adventurer.findAll({
       include: {
         model: TownBehavior,
