@@ -28,15 +28,15 @@ adventurerRouter.get('/adventurers', async (req, res) => {
 
 adventurerRouter.get('/adventurers-full', async (req, res) => {
   try {
-    Adventurer.hasOne(TownBehavior);
+    Adventurer.belongsTo(TownBehavior);
     TownBehavior.hasMany(Adventurer, {
       foreignKey: 'town_behavior_id'
     });
-    Adventurer.hasOne(DungeonBehavior);
+    Adventurer.belongsTo(DungeonBehavior);
     DungeonBehavior.hasMany(Adventurer, {
       foreignKey: 'dungeon_behavior_id'
     });
-    Adventurer.hasOne(AdventurerClass);
+    Adventurer.belongsTo(AdventurerClass);
     AdventurerClass.hasMany(Adventurer, {
       foreignKey: 'adventurer_class_id'
     });
