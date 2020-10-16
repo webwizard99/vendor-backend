@@ -32,9 +32,9 @@ adventurerRouter.get('/adventurers-full', async (req, res) => {
       foreignKey: 'town_behavior_id'
     });
     TownBehavior.hasMany(Adventurer);
-    Adventurer.belongsTo(DungeonBehavior), {
+    Adventurer.belongsTo(DungeonBehavior, {
       foreignKey: 'dungeon_behavior_id'
-    };
+    });
     DungeonBehavior.hasMany(Adventurer);
     Adventurer.belongsTo(AdventurerClass, {
       foreignKey: 'adventurer_class_id'
