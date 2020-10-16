@@ -41,9 +41,11 @@ adventurerRouter.get('/adventurers-full', async (req, res) => {
     });
     AdventurerClass.hasMany(Adventurer);
     let adventurers = await Adventurer.findAll({
-      include: {
-        model: [TownBehavior, DungeonBehavior, AdventurerClass ]
-      }
+      include: [
+        { model: TownBehavior },
+        { model: DungeonBehavior },
+        { model: AdventurerClass }
+      ]
     });
     res.status(200).send(adventurers);
   } catch (err) {
