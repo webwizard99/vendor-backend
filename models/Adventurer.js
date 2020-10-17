@@ -26,15 +26,15 @@ const Adventurer = db.define('adventurer', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  dungeon_behavior_id: {
+  dungeonBehaviorId: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  town_behavior_id: {
+  townBehaviorId: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  adventurer_class_id: {
+  adventurerClassId: {
     type: Sequelize.INTEGER,
     allowNull: false
   }

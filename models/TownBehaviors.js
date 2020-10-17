@@ -66,6 +66,6 @@ const TownBehavior = db.define('town_behavior', {
     type: Sequelize.INTEGER,
     allowNull: false
   }
-}, { underscored: true });
+});
 
 module.exports = TownBehavior;
