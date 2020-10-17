@@ -1,4 +1,9 @@
 const authorization = (req, res, next) => {
+  if (!req.user) {
+    req.authorization = false;
+    next();
+  }
+  
   // if there is no user type, set authorization to false and
   // finish middleware
   if (!req.user.dataValues.type) {
