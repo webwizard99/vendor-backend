@@ -90,6 +90,6 @@ const DungeonBehavior = db.define('dungeon_behavior', {
     type: Sequelize.INTEGER,
     allowNull: false
   }
-});
+}, { underscored: true });
 
 module.exports = DungeonBehavior;
