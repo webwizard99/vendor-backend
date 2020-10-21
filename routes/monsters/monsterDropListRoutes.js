@@ -27,3 +27,5 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
   }
   res.status(200).send(monsterDropLists);
 });
+
+module.exports = monsterDropListRouter;
