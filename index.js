@@ -24,6 +24,8 @@ const userRoutes = require('./routes/userRoutes');
 const behaviorRoutes = require('./routes/npcs/behaviors/behaviorRoutes');
 const adventurerClassRoutes = require('./routes/npcs/adventurers/classRoutes');
 const adventurerRoutes = require('./routes/npcs/adventurers/adventurerRoutes');
+// monster imports
+const monsterDropListRoutes = require('./routes/monsters/monsterDropListRoutes');
 
 const app = express();
 
@@ -71,5 +73,7 @@ app.use('/', userRoutes);
 app.use('/', behaviorRoutes);
 app.use('/', adventurerClassRoutes);
 app.use('/', adventurerRoutes);
+// mounst monster routes
+app.use('/', monsterDropListRoutes);
 
 app.listen(PORT);
