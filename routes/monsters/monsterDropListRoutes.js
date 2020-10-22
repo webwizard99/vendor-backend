@@ -17,12 +17,14 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
     DropList.belongsTo(MonsterDropList);
     DropList.hasMany(Drop);
     Drop.belongsTo(DropList);
-    monsterDropLists = await MonsterDropList.findAll({
+    monsterDropLists = await DropList.findAll({
       include: [{
-        model: DropList
+        model: MonsterDropList
       },
       { model: Drop }]
-    });
+    }, { where: {
+      type: dropListTypes.monster
+    }});
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
@@ -31,12 +33,4 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
   res.status(200).send(monsterDropLists);
 });
 
-// monsterDropLists = await DropList.findAll({
-//   include: [{
-//     model: MonsterDropList
-//   },
-//   { model: Drop }]
-// }, { where: {
-//   type: dropListTypes.monster
-// }});
 module.exports = monsterDropListRouter;
