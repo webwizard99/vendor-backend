@@ -14,7 +14,7 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
   let monsterDropLists;
   try {
     MonsterDropList.hasOne(DropList);
-    DropList.belongsTo(DropList);
+    DropList.belongsTo(MonsterDropList);
     DropList.hasMany(Drop);
     Drop.belongsTo(DropList);
     monsterDropLists = await DropList.findAll({
