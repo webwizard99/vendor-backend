@@ -13,8 +13,8 @@ const monsterDropListRouter = express.Router();
 monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
   let monsterDropLists;
   try {
-    MonsterDropList.hasOne(DropList);
-    DropList.belongsTo(MonsterDropList);
+    DropList.hasOne(MonsterDropList);
+    MonsterDropList.belongsTo(DropList);
     DropList.hasMany(Drop);
     Drop.belongsTo(DropList);
     monsterDropLists = await DropList.findAll({
