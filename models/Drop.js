@@ -14,7 +14,7 @@ const Drop = db.define('drop', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  type: {
+  drop_type: {
     type: Sequelize.TEXT,
     allowNull: false
   }
