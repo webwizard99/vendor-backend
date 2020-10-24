@@ -13,6 +13,10 @@ const Drop = db.define('drop', {
   dropListId: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  type: {
+    type: Sequelize.TEXT,
+    allowNull: false
   }
 });
 
