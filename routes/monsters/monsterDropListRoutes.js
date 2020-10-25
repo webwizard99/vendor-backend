@@ -42,7 +42,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
     gold_max,
     gold_chance,
     newIndexes
-  }
+  } = req.body;
 
   // validate inputs
   if (name && typeof name!== 'string') {
