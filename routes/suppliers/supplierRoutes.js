@@ -42,8 +42,8 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
   // reject request if missing a field
   if (!name) {
     console.log('supplier post request missing field');
-    res.status(400).send();
-    return false;
+    res.status(400).send(false);
+    return;
   }
 
   if (typeof newIndexes === 'string') {
@@ -283,9 +283,6 @@ supplierRouter.delete('/supplier', authorization, async (req, res) => {
       deletedIds = deletedIds.split(',');
     }
   }
-
-  console.log(deletedIds);
-  console.log(deletedIds.length);
 
   // associate models
   Supplier.hasMany(Offering);
