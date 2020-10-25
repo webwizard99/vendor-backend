@@ -84,10 +84,10 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
     res.status(400).send(false);
     return;
   }
-
+  const newDropListId = newDropList.id;
   try {
     MonsterDropList.create({
-      droplistId: newDropList.id,
+      droplistId: newDropListId,
       name: name
     });
   } catch (err) {
@@ -127,7 +127,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
         itemId: newId,
         dropChance: dropChance,
         drop_type: newType,
-        droplistId: newDropList.id
+        droplistId: newDropListId
       });
     } catch (err) {
       console.log(err);
@@ -214,9 +214,10 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   }
 
   // update monsterDropList
+  const updatedDroplistId = updatedDroplist.id;
   try {
     MonsterDropList.update({
-      droplistId: updatedDroplist.id,
+      droplistId: updatedDroplistId,
       name: name
     }, { where: {
       id: monsterDroplistId
@@ -269,7 +270,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
           itemId: itemId,
           dropChance: dropChance,
           drop_type: itemType,
-          droplistId: updatedDroplist.id
+          droplistId: updatedDroplistId
         }, { where: {
           id: existId
         }});
@@ -310,7 +311,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
         itemId: newId,
         dropChance: dropChance,
         drop_type: newType,
-        droplistId: newDropList.id
+        droplistId: updatedDroplistId
       });
     } catch (err) {
       console.log(err);
