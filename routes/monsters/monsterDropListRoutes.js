@@ -57,19 +57,14 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   gold_max = validation.validateInteger(gold_max);
   gold_chance = validation.validateInteger(gold_chance);
 
-  console.log(newIndexes);
-  console.log(typeof newIndexes);
-  console.log(newIndexes.length);
   if (typeof newIndexes === 'string' && newIndexes.length > 0) {
-    if (newIndexes.length === 1) {
+    if (!newIndexes.includes(',')) {
       newIndexes = [Number.parseInt(newIndexes)];
     } else {
       newIndexes = newIndexes.split(',');
     }
   }
-  console.log(newIndexes);
-  console.log(typeof newIndexes);
-  console.log(newIndexes.length);
+  
   // associate models
   DropList.hasOne(MonsterDropList);
   MonsterDropList.belongsTo(DropList);
@@ -146,11 +141,6 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   }
 
   res.status(200).send(true);
-
-  // Promise.allSettled(newDropList)
-  //   .then(async (result) => {
-      
-  //       });
       
 });
 
@@ -183,24 +173,24 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   monsterDroplistId = validation.validateInteger(monsterDroplistId);
 
   if (typeof existingIds === 'string' && existingIds.length > 0) {
-    if (existingIds.length === 1) {
-      existingIds = Array.from(Number.parseInt(existingIds));
+    if (!existingIds.includes(',')) {
+      existingIds = [Number.parseInt(existingIds)];
     } else {
       existingIds = existingIds.split(',');
     }
   }
 
   if (typeof deletedIds === 'string' && deletedIds.length > 0) {
-    if (deletedIds.length === 1) {
-      deletedIds = Array.from(Number.parseInt(deletedIds));
+    if (!deletedIds.includes(',')) {
+      deletedIds = [Number.parseInt(deletedIds)];
     } else {
       deletedIds = deletedIds.split(',');
     }
   }
 
   if (typeof newIndexes === 'string' && newIndexes.length > 0) {
-    if (newIndexes.length === 1) {
-      newIndexes = Array.from(Number.parseInt(newIndexes));
+    if (!newIndexes.includes(',')) {
+      newIndexes = [Number.parseInt(newIndexes)];
     } else {
       newIndexes = newIndexes.split(',');
     }
