@@ -85,62 +85,64 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
     return;
   }
 
-  Promise.allSettled(newDropList)
-    .then(async (result) => {
-      console.log(newDropList);
-      const newDropListId = newDropList[0].dataValues.id;
-      try {
-        MonsterDropList.create({
-          droplistId: newDropListId,
-          name: name
-        });
-      } catch (err) {
-        console.log(err);
-        res.status(400).send(false);
-        return;
-      }
+  console.log(newDropList);
+  const newDropListId = newDropList.id;
+  try {
+    MonsterDropList.create({
+      dropListId: newDropListId,
+      name: name
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
 
-      // If no drops sent with dropList POST request, finish request
-      if (newIndexes.length <= 0) {
-        res.status(200).send(true);
-        return;
-      }
+  // If no drops sent with dropList POST request, finish request
+  if (newIndexes.length <= 0) {
+    res.status(200).send(true);
+    return;
+  }
 
-      // attempt to add all new drops sent with POST request
-      for (let index of newIndexes) {
-        let itemInfo = req.body[`new-drop-${index}-item-id`];
-        if (itemInfo !== undefined && itemInfo !== null) {
-          itemInfo = JSON.parse(itemInfo);
-        }
-        let newId = itemInfo.id;
-        let newType = itemInfo.type;
-        let dropChance = req.body[`new-drop-${index}-drop-chance`];
+  // attempt to add all new drops sent with POST request
+  for (let index of newIndexes) {
+    let itemInfo = req.body[`new-drop-${index}-item-id`];
+    if (itemInfo !== undefined && itemInfo !== null) {
+      itemInfo = JSON.parse(itemInfo);
+    }
+    let newId = itemInfo.id;
+    let newType = itemInfo.type;
+    let dropChance = req.body[`new-drop-${index}-drop-chance`];
 
-        // validate inputs
-        if (newType && typeof newType !== 'string') {
-          newType = newType.toString();
-        }
-        if (dropChance === undefined || newId === undefined || !newType || itemTypes[newType] === undefined) {
-          console.log('attempted to create drop with missing or bad field');
-          res.status(400).send();
-        }
-        newId = validation.validateInteger(newId);
-        dropChance = validation.validateInteger(dropChance);
-        try {
-          Drop.create({
-            itemId: newId,
-            dropChance: dropChance,
-            drop_type: newType,
-            droplistId: newDropListId
-          });
-        } catch (err) {
-          console.log(err);
-          res.status(400).send();
-        }
-      }
+    // validate inputs
+    if (newType && typeof newType !== 'string') {
+      newType = newType.toString();
+    }
+    if (dropChance === undefined || newId === undefined || !newType || itemTypes[newType] === undefined) {
+      console.log('attempted to create drop with missing or bad field');
+      res.status(400).send();
+    }
+    newId = validation.validateInteger(newId);
+    dropChance = validation.validateInteger(dropChance);
+    try {
+      Drop.create({
+        itemId: newId,
+        dropChance: dropChance,
+        drop_type: newType,
+        dropListId: newDropListId
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+    }
+  }
 
-      res.status(200).send(true);
-        });
+  res.status(200).send(true);
+
+  // Promise.allSettled(newDropList)
+  //   .then(async (result) => {
+      
+  //       });
       
 });
 
@@ -220,10 +222,9 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   }
 
   // update monsterDropList
-  const updatedDroplistId = updatedDroplist[0].dataValues.id;
   try {
     MonsterDropList.update({
-      droplistId: id,
+      dropListId: id,
       name: name
     }, { where: {
       id: monsterDroplistId
@@ -276,7 +277,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
           itemId: itemId,
           dropChance: dropChance,
           drop_type: itemType,
-          droplistId: id
+          dropListId: id
         }, { where: {
           id: existId
         }});
@@ -317,7 +318,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
         itemId: newId,
         dropChance: dropChance,
         drop_type: newType,
-        droplistId: id
+        dropListId: id
       });
     } catch (err) {
       console.log(err);
