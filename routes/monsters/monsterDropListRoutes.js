@@ -86,7 +86,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
     return;
   }
 
-  console.log(newDropList);
+  // console.log(newDropList);
   const newDropListId = newDropList.id;
   try {
     MonsterDropList.create({
@@ -100,7 +100,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   }
 
   // If no drops sent with dropList POST request, finish request
-  if (newIndexes.length <= 0) {
+  if (newIndexes.length < 0 && typeof newIndexes !== 'number') {
     res.status(200).send(true);
     return;
   }
@@ -239,7 +239,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   }
 
   // handle existing drops to be deleted
-  if (deletedIds.length > 0) {
+  if (deletedIds.length > 0 || typeof deletedIds === 'number') {
     for (let delId of deletedIds) {
       // remove any ids to be deleted from existing list
       if (existingIds.includes(delId)) {
@@ -257,7 +257,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   }
 
   // handle existing drops
-  if (existingIds.length > 0) {
+  if (existingIds.length > 0 || typeof existingIds === 'number') {
     for (let existId of existingIds) {
       let itemInfo = req.body[`drop-${existId}-item-id`];
       if (itemInfo !== undefined && itemInfo !== null) {
@@ -291,7 +291,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   }
 
   // if no new drops sent with supplier PUT request, finish request
-  if (newIndexes.length <= 0) {
+  if (newIndexes.length <= 0 && typeof newIndexes !== 'number') {
     res.status(200).send(true);
     return;
   }
