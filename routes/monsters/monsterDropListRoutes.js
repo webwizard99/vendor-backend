@@ -57,6 +57,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   gold_max = validation.validateInteger(gold_max);
   gold_chance = validation.validateInteger(gold_chance);
 
+  console.log(newIndexes);
   if (typeof newIndexes === 'string' && newIndexes.length > 0) {
     if (newIndexes.length === 1) {
       newIndexes = Array.from(Number.parseInt(newIndexes));
@@ -106,6 +107,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
 
   // attempt to add all new drops sent with POST request
   for (let index of newIndexes) {
+    console.log('in Drop creation logic in monsterDropList POST route...');
     let itemInfo = req.body[`new-drop-${index}-item-id`];
     console.log(itemInfo);
     if (itemInfo !== undefined && itemInfo !== null) {
