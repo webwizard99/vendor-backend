@@ -87,7 +87,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
 
   Promise.allSettled(newDropList)
     .then(async (result) => {
-      const newDropListId = newDropList.id;
+      const newDropListId = newDropList[0].dataValues.id;
       try {
         MonsterDropList.create({
           droplistId: newDropListId,
@@ -221,7 +221,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   Promise.allSettled(updatedDroplist)
     .then(async (result) => {
       // update monsterDropList
-      const updatedDroplistId = updatedDroplist.id;
+      const updatedDroplistId = updatedDroplist[0].dataValues.id;
       try {
         MonsterDropList.update({
           droplistId: updatedDroplistId,
