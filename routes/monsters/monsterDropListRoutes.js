@@ -87,6 +87,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
 
   Promise.allSettled(newDropList)
     .then(async (result) => {
+      console.log(newDropList);
       const newDropListId = newDropList[0].dataValues.id;
       try {
         MonsterDropList.create({
@@ -218,117 +219,114 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
     return;
   }
 
-  Promise.allSettled(updatedDroplist)
-    .then(async (result) => {
-      // update monsterDropList
-      const updatedDroplistId = updatedDroplist[0].dataValues.id;
+  // update monsterDropList
+  const updatedDroplistId = updatedDroplist[0].dataValues.id;
+  try {
+    MonsterDropList.update({
+      droplistId: id,
+      name: name
+    }, { where: {
+      id: monsterDroplistId
+    }});
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  // handle existing drops to be deleted
+  if (deletedIds.length > 0) {
+    for (let delId of deletedIds) {
+      // remove any ids to be deleted from existing list
+      if (existingIds.includes(delId)) {
+        let delIndex = existingIds.indexOf(delId);
+        existingIds.splice(delIndex);
+      }
+
+      // delete drop from database
       try {
-        MonsterDropList.update({
-          droplistId: updatedDroplistId,
-          name: name
+        Drop.destroy({ where: { id: delId }});
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  // handle existing drops
+  if (existingIds.length > 0) {
+    for (let existId of existingIds) {
+      let itemInfo = req.body[`drop-${existId}-item-id`];
+      if (itemInfo !== undefined && itemInfo !== null) {
+        itemInfo = JSON.parse(itemInfo);
+      }
+      let itemId = itemInfo.id;
+      let itemType = itemInfo.type;
+      let dropChance = req.body[`drop-${existId}-drop-chance`];
+      if (itemType && typeof itemType !== 'string') {
+        itemType = itemType.toString();
+      }
+      if (dropChance === undefined || itemId === undefined || !itemType || itemTypes[itemType] === undefined) {
+        console.log('attempted to update drop with missing or bad field');
+        res.status(400).send();
+      }
+      id = validation.validateInteger(id);
+      dropChance = validation.validateInteger(dropChance);
+      try {
+        Drop.update({
+          itemId: itemId,
+          dropChance: dropChance,
+          drop_type: itemType,
+          droplistId: id
         }, { where: {
-          id: monsterDroplistId
+          id: existId
         }});
       } catch (err) {
         console.log(err);
-        res.status(400).send(false);
-        return;
       }
+    }
+  }
 
-      // handle existing drops to be deleted
-      if (deletedIds.length > 0) {
-        for (let delId of deletedIds) {
-          // remove any ids to be deleted from existing list
-          if (existingIds.includes(delId)) {
-            let delIndex = existingIds.indexOf(delId);
-            existingIds.splice(delIndex);
-          }
+  // if no new drops sent with supplier PUT request, finish request
+  if (newIndexes.length <= 0) {
+    res.status(200).send(true);
+    return;
+  }
 
-          // delete drop from database
-          try {
-            Drop.destroy({ where: { id: delId }});
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
+  // attempt to add all new drops sent with put request
+  for (let index of newIndexes) {
+    let itemInfo = req.body[`new-drop-${index}-item-id`];
+    if (itemInfo !== undefined && itemInfo !== null) {
+      itemInfo = JSON.parse(itemInfo);
+    }
+    let newId = itemInfo.id;
+    let newType = itemInfo.type;
+    let dropChance = req.body[`new-drop-${index}-drop-chance`];
 
-      // handle existing drops
-      if (existingIds.length > 0) {
-        for (let existId of existingIds) {
-          let itemInfo = req.body[`drop-${existId}-item-id`];
-          if (itemInfo !== undefined && itemInfo !== null) {
-            itemInfo = JSON.parse(itemInfo);
-          }
-          let itemId = itemInfo.id;
-          let itemType = itemInfo.type;
-          let dropChance = req.body[`drop-${existId}-drop-chance`];
-          if (itemType && typeof itemType !== 'string') {
-            itemType = itemType.toString();
-          }
-          if (dropChance === undefined || itemId === undefined || !itemType || itemTypes[itemType] === undefined) {
-            console.log('attempted to update drop with missing or bad field');
-            res.status(400).send();
-          }
-          id = validation.validateInteger(id);
-          dropChance = validation.validateInteger(dropChance);
-          try {
-            Drop.update({
-              itemId: itemId,
-              dropChance: dropChance,
-              drop_type: itemType,
-              droplistId: updatedDroplistId
-            }, { where: {
-              id: existId
-            }});
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
+    // validate inputs
+    if (newType && typeof newType !== 'string') {
+      newType = newType.toString();
+    }
+    if (dropChance === undefined || newId === undefined || !newType || itemTypes[newType] === undefined) {
+      console.log('attempted to create drop with missing or bad field');
+      res.status(400).send();
+    }
+    newId = validation.validateInteger(newId);
+    dropChance = validation.validateInteger(dropChance);
+    try {
+      Drop.create({
+        itemId: newId,
+        dropChance: dropChance,
+        drop_type: newType,
+        droplistId: id
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send();
+    }
+  }
 
-      // if no new drops sent with supplier PUT request, finish request
-      if (newIndexes.length <= 0) {
-        res.status(200).send(true);
-        return;
-      }
+  res.status(200).send(true);
 
-      // attempt to add all new drops sent with put request
-      for (let index of newIndexes) {
-        let itemInfo = req.body[`new-drop-${index}-item-id`];
-        if (itemInfo !== undefined && itemInfo !== null) {
-          itemInfo = JSON.parse(itemInfo);
-        }
-        let newId = itemInfo.id;
-        let newType = itemInfo.type;
-        let dropChance = req.body[`new-drop-${index}-drop-chance`];
-
-        // validate inputs
-        if (newType && typeof newType !== 'string') {
-          newType = newType.toString();
-        }
-        if (dropChance === undefined || newId === undefined || !newType || itemTypes[newType] === undefined) {
-          console.log('attempted to create drop with missing or bad field');
-          res.status(400).send();
-        }
-        newId = validation.validateInteger(newId);
-        dropChance = validation.validateInteger(dropChance);
-        try {
-          Drop.create({
-            itemId: newId,
-            dropChance: dropChance,
-            drop_type: newType,
-            droplistId: updatedDroplistId
-          });
-        } catch (err) {
-          console.log(err);
-          res.status(400).send();
-        }
-      }
-
-      res.status(200).send(true);
-    });
-  
 });
 
 module.exports = monsterDropListRouter;
