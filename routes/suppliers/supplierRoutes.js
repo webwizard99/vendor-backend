@@ -46,9 +46,9 @@ supplierRouter.post('/supplier', authorization, async (req, res) => {
     return;
   }
 
-  if (typeof newIndexes === 'string') {
-    if (newIndexes.length === 1) {
-      newIndexes = Array.from(Number.parseInt(newIndexes));
+  if (typeof newIndexes === 'string' && newIndexes.length > 0) {
+    if (!newIndexes.includes(',')) {
+      newIndexes = [Number.parseInt(newIndexes)];
     }
     newIndexes = newIndexes.split(',')
   }
@@ -129,23 +129,23 @@ supplierRouter.put('/supplier', authorization, async (req, res) => {
     return false;
   }
 
-  if (typeof existingIds === 'string') {
-    if (existingIds.length === 1) {
-      existingIds = Array.from(Number.parseInt(existingIds));
+  if (typeof existingIds === 'string' && existingIds.length > 0) {
+    if (!existingIds.includes(',')) {
+      existingIds = [Number.parseInt(existingIds)];
     } else {
       existingIds = existingIds.split(',');
     }
   }
   if (typeof deletedIds === 'string' && deletedIds !== '') {
-    if (deletedIds.length === 1) {
-      deletedIds = Array.from(Number.parseInt(deletedIds));
+    if (!deletedIds.includes(',')) {
+      deletedIds = [Number.parseInt(deletedIds)];
     } else {
       deletedIds = deletedIds.split(',');
     }
   }
   if (typeof newIndexes === 'string' && newIndexes !== '') {
-    if (newIndexes.length === 1) {
-      newIndexes = Array.from(Number.parseInt(newIndexes));
+    if (!newIndexes.includes(',')) {
+      newIndexes = [Number.parseInt(newIndexes)];
     } else {
       newIndexes = newIndexes.split(',');
     }
