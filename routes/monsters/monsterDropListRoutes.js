@@ -57,7 +57,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   gold_max = validation.validateInteger(gold_max);
   gold_chance = validation.validateInteger(gold_chance);
 
-  if (typeof newIndexes === 'string') {
+  if (typeof newIndexes === 'string' && newIndexes.length > 0) {
     if (newIndexes.length === 1) {
       newIndexes = Array.from(Number.parseInt(newIndexes));
     } else {
@@ -107,9 +107,11 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   // attempt to add all new drops sent with POST request
   for (let index of newIndexes) {
     let itemInfo = req.body[`new-drop-${index}-item-id`];
+    console.log(itemInfo);
     if (itemInfo !== undefined && itemInfo !== null) {
       itemInfo = JSON.parse(itemInfo);
     }
+    console.log(itemInfo);
     let newId = itemInfo.id;
     let newType = itemInfo.type;
     let dropChance = req.body[`new-drop-${index}-drop-chance`];
@@ -174,7 +176,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   id = validation.validateInteger(id);
   monsterDroplistId = validation.validateInteger(monsterDroplistId);
 
-  if (typeof existingIds === 'string') {
+  if (typeof existingIds === 'string' && existingIds.length > 0) {
     if (existingIds.length === 1) {
       existingIds = Array.from(Number.parseInt(existingIds));
     } else {
@@ -182,7 +184,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
     }
   }
 
-  if (typeof deletedIds === 'string') {
+  if (typeof deletedIds === 'string' && deletedIds.length > 0) {
     if (deletedIds.length === 1) {
       deletedIds = Array.from(Number.parseInt(deletedIds));
     } else {
@@ -190,7 +192,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
     }
   }
 
-  if (typeof newIndexes === 'string') {
+  if (typeof newIndexes === 'string' && newIndexes.length > 0) {
     if (newIndexes.length === 1) {
       newIndexes = Array.from(Number.parseInt(newIndexes));
     } else {
@@ -205,9 +207,8 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
   Drop.belongsTo(DropList);
 
   // update droplist
-  let updatedDroplist;
   try {
-    updatedDroplist = await DropList.update({
+    DropList.update({
       gold_min: gold_min,
       gold_max: gold_max,
       gold_chance: gold_chance,
@@ -270,7 +271,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
         console.log('attempted to update drop with missing or bad field');
         res.status(400).send();
       }
-      id = validation.validateInteger(id);
+      itemId = validation.validateInteger(itemId);
       dropChance = validation.validateInteger(dropChance);
       try {
         Drop.update({
