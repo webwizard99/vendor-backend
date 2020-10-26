@@ -62,7 +62,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
   console.log(newIndexes.length);
   if (typeof newIndexes === 'string' && newIndexes.length > 0) {
     if (newIndexes.length === 1) {
-      newIndexes = Array.from(Number.parseInt(newIndexes));
+      newIndexes = [Number.parseInt(newIndexes)];
     } else {
       newIndexes = newIndexes.split(',');
     }
