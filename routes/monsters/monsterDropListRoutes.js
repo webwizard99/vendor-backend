@@ -327,4 +327,65 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
 
 });
 
+monsterDropListRouter.delete('/monster_drop_list', authorization, async (req, res) => {
+  let {
+    id, monsterDroplistId, dropIds: deletedIds
+  } = req.body;
+
+  // exist if no valid ID sent
+  if (id === undefined || id === null) {
+    console.log('attempted to delete monster drop list without ID')
+    res.status(400).send(false);
+    return;
+  }
+
+  //validate data
+  id = validation.validateInteger(id);
+  monsterDroplistId = validation.validateInteger(monsterDroplistId);
+
+  // validate and convert dropIds
+  if (typeof deletedIds === 'string' && deletedIds !== '') {
+    if (!deletedIds.includes(',')) {
+      deletedIds = [Number.parseInt(deletedIds)];
+    } else {
+      deletedIds = deletedIds.split(',');
+    }
+  }
+
+  // associate models
+  DropList.hasOne(MonsterDropList);
+  MonsterDropList.belongsTo(DropList);
+  DropList.hasMany(Drop);
+  Drop.belongsTo(DropList);
+
+  try {
+    DropList.destroy({ where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  try {
+    MonsterDropList.destroy({ where: { id: monsterDroplistId } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  // handle existing drops to be deleted
+  if (deletedIds.length > 0) {
+    for (let delId of deletedIds) {
+      try {
+        Drop.destroy({ where: { id: delId } });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  res.status(200).send(true);
+})
+
 module.exports = monsterDropListRouter;
