@@ -277,8 +277,8 @@ supplierRouter.delete('/supplier', authorization, async (req, res) => {
 
   // validate and convert offering ids
   if (typeof deletedIds === 'string' && deletedIds !== '') {
-    if (deletedIds.length === 1) {
-      deletedIds = Array.from(Number.parseInt(deletedIds));
+    if (!deletedIds.includes(',')) {
+      deletedIds = [Number.parseInt(deletedIds)];
     } else {
       deletedIds = deletedIds.split(',');
     }
