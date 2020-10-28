@@ -77,7 +77,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
       gold_min: gold_min,
       gold_max: gold_max,
       gold_chance: gold_chance,
-      type: 'monster'
+      type: dropListTypes.monster
     });
   } catch (err) {
     console.log(err);
@@ -207,8 +207,7 @@ monsterDropListRouter.put('/monster_drop_list', authorization, async (req, res) 
     DropList.update({
       gold_min: gold_min,
       gold_max: gold_max,
-      gold_chance: gold_chance,
-      type: 'monster'
+      gold_chance: gold_chance
     }, { where: {
       id: id
     }});
