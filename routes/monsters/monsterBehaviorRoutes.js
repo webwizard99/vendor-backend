@@ -16,5 +16,105 @@ monsterBehaviorRouter.get('/monster_behaviors', async (req, res) => {
   }
 });
 
+monsterBehaviorRouter.post('/monster_behavior', authorization, async (req, res) => {
+  let {
+    name,
+    confront_weakened_adventurer,
+    special_move,
+    defend,
+    heal,
+    block_flee,
+    migrate
+  } = req.body;
+
+  // validate input types
+  name = validation.validateString(name);
+  confront_weakened_adventurer = validation.validateInteger(confront_weakened_adventurer);
+  special_move = validation.validateInteger(special_move);
+  defend = validation.validateInteger(defend);
+  heal = validation.validateInteger(heal);
+  block_flee = validation.validateInteger(block_flee);
+  migrate = validation.validateInteger(migrate);
+
+  if (!name || confront_weakened_adventurer === undefined || special_move === undefined ||
+    defend === undefined || heal === undefined || block_flee === undefined || 
+    migrate === undefined) {
+    console.log('monster behavior POST request missing field');
+    res.status(400).send(false);
+    return;
+  }
+  try {
+    MonsterBehavior.create({
+      name,
+      confront_weakened_adventurer,
+      special_move,
+      defend,
+      heal,
+      block_flee,
+      migrate
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
+
+monsterBehaviorRouter.put('/monster_behavior', authorization, async (req, res) => {
+  let {
+    id,
+    name,
+    confront_weakened_adventurer,
+    special_move,
+    defend,
+    heal,
+    block_flee,
+    migrate
+  } = req.body;
+
+  // check id
+  if (id === undefined || id === null) {
+    console.log('Attempted PUT request for monster behavior without valid id');
+    res.status(400).send(false);
+    return;
+  }
+  // validate input types
+  name = validation.validateString(name);
+  id = validation.validateInteger(id);
+  confront_weakened_adventurer = validation.validateInteger(confront_weakened_adventurer);
+  special_move = validation.validateInteger(special_move);
+  defend = validation.validateInteger(defend);
+  heal = validation.validateInteger(heal);
+  block_flee = validation.validateInteger(block_flee);
+  migrate = validation.validateInteger(migrate);
+
+  if (!name || confront_weakened_adventurer === undefined || special_move === undefined ||
+    defend === undefined || heal === undefined || block_flee === undefined || 
+    migrate === undefined) {
+    console.log('monster behavior POST request missing field');
+    res.status(400).send(false);
+    return;
+  }
+
+  try {
+    MonsterBehavior.update({
+      name,
+      confront_weakened_adventurer,
+      special_move,
+      defend,
+      heal,
+      block_flee,
+      migrate
+    }, { where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(true);
+});
+
 module.exports = monsterBehaviorRouter;
 
