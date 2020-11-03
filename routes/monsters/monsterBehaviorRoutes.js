@@ -6,6 +6,11 @@ const authorization = require('../../middleware/authorization');
 const validation = require('../../utilities/validation');
 const monsterBehaviorRouter = express.Router();
 
+monsterBehaviorRouter.param(':behaviorId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 monsterBehaviorRouter.get('/monster_behaviors', async (req, res) => {
   try {
     let allMonsterBehaviors = await MonsterBehavior.findAll();
@@ -115,6 +120,24 @@ monsterBehaviorRouter.put('/monster_behavior', authorization, async (req, res) =
 
   res.status(200).send(true);
 });
+
+monsterBehaviorRouter.delete('/monster_behavior/:behaviorId', authorization, async (req, res) => {
+  let id = req.id;
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+    return;
+  }
+  id = validation.validateInteger(id);
+
+  try {
+    MonsterBehavior.destroy({ where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+})
 
 module.exports = monsterBehaviorRouter;
 
