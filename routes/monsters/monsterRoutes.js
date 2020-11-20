@@ -38,7 +38,11 @@ monsterRouter.post('/monster', authorization, async (req, res) => {
   if (name && typeof name !== 'string') {
     name = name.toString();
   }
-  boss = validation.validateInteger(boss);
+  if (boss === 'true' || boss === true) {
+    boss = true;
+  } else {
+    boss = false;
+  }
   level = validation.validateInteger(level);
   hp = validation.validateInteger(hp);
   damage = validation.validateInteger(damage);
@@ -107,7 +111,11 @@ monsterRouter.put('/monster', authorization, async (req, res) => {
     res.status(400).send(false);
     return;
   }
-  boss = validation.validateInteger(boss);
+  if (boss === 'true' || boss === true) {
+    boss = true;
+  } else {
+    boss = false;
+  }
   level = validation.validateInteger(level);
   hp = validation.validateInteger(hp);
   damage = validation.validateInteger(damage);
