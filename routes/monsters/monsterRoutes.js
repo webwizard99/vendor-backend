@@ -8,6 +8,11 @@ const validation = require('../../utilities/validation');
 
 const monsterRouter = express.Router();
 
+monsterRouter.param(':monsterId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 monsterRouter.get('/monsters', async (req, res) => {
   try {
     let allMonsters = await Monster.findAll();
@@ -151,6 +156,25 @@ monsterRouter.put('/monster', authorization, async (req, res) => {
       dropListId,
       monsterBehaviorId
     }, { where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
+
+monsterRouter.delete('/monster/:monsterId', authorization, async (req, res) => {
+  let id = req.id;
+  if (id === null || id === undefined) {
+    console.log('attempted to DELETE monster without valid id');
+    res.status(400).send(false);
+    return;
+  }
+  id = validation.validateInteger(id);
+
+  try {
+    Monster.destroy({ where: { id: id } });
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
