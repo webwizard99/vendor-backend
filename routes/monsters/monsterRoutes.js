@@ -1,5 +1,7 @@
 const express = require('express');
 const Monster = require('../../models/Monsters');
+const DropList = require('../../models/DropList');
+const MonsterBehavior = require('../../models/MonsterBehaviors');
 
 // middleware imports
 const authorization = require('../../middleware/authorization');
@@ -22,6 +24,25 @@ monsterRouter.get('/monsters', async (req, res) => {
     res.status(400).send(false);
   }
 });
+
+monsterRouter.get('/monsters-full', async (req, res) => {
+  try {
+    Monster.belongsTo(DropList);
+    DropList.hasMany(Monster);
+    Monster.belongsTo(MonsterBehavior);
+    MonsterBehavior.hasMany(Monster);
+    let monsters = await Monster.findAll({
+      include: [
+        { model: DropList },
+        { model: MonsterBehavior }
+      ]
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+})
 
 monsterRouter.post('/monster', authorization, async (req, res) => {
   let {
