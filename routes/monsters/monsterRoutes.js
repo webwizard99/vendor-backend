@@ -37,6 +37,7 @@ monsterRouter.get('/monsters-full', async (req, res) => {
         { model: MonsterBehavior }
       ]
     });
+    res.status(200).send(monsters);
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
