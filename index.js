@@ -28,6 +28,8 @@ const adventurerRoutes = require('./routes/npcs/adventurers/adventurerRoutes');
 const monsterDropListRoutes = require('./routes/monsters/monsterDropListRoutes');
 const monsterBehaviorRoutes = require('./routes/monsters/monsterBehaviorRoutes');
 const monsterRoutes = require('./routes/monsters/monsterRoutes');
+// dungeon imports
+const dungeonTileRoutes = require('./routes/dungeon/dungeonTileRoutes');
 
 const app = express();
 
@@ -79,5 +81,7 @@ app.use('/', adventurerRoutes);
 app.use('/', monsterDropListRoutes);
 app.use('/', monsterBehaviorRoutes);
 app.use('/', monsterRoutes);
+// mount dungeon routes
+app.use('/', dungeonTileRoutes);
 
 app.listen(PORT);
