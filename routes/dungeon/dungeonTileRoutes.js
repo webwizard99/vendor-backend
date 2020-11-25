@@ -8,7 +8,7 @@ const validation = require('../../utilities/validation');
 
 const dungeonTileRouter = express.Router();
 
-dungeonTileRouter.get('dungeon_tiles', async (req, res) => {
+dungeonTileRouter.get('/dungeon_tiles', async (req, res) => {
   
   try {
     let dungeonTiles = await DungeonTile.findAll();
