@@ -37,7 +37,7 @@ classRouter.post('/adventurer_class', authorization, async (req, res) => {
   } = req.body;
 
   // validate input types
-  if (name && typeof name!== 'string') {
+  if (name && typeof name !== 'string') {
     name = name.toString();
   }
   bargaining = validation.validateInteger(bargaining);
@@ -135,8 +135,7 @@ classRouter.put('/adventurer_class', authorization, async (req, res) => {
       martial_weapons,
       armor,
       anatomy
-    }, { where: { id: id 
-    }});
+    }, { where: { id: id }});
   } catch (err) {
     console.log(err);
     res.status(400).send(false);

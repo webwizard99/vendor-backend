@@ -20,4 +20,98 @@ dungeonTileRouter.get('/dungeon_tiles', async (req, res) => {
   }
 });
 
+dungeonTileRouter.post('/dungeon_tile', authorization, async (req, res) => {
+  let {
+    name,
+    boss,
+    stairs_up,
+    treasure,
+    encounter,
+    trap
+  } = req.body;
+
+  // validate input types
+  if (name && typeof name !== 'string') {
+    name = name.toString();
+  }
+  boss = validation.validateBoolean(boss);
+  stairs_up = validation.validateBoolean(stairs_up);
+  treasure = validation.validateInteger(treasure);
+  encounter = validation.validateInteger(encounter);
+  trap = validation.validateInteger(trap);
+
+  if (!name || treasure === undefined || encounter === undefined || 
+    trap === undefined) {
+      console.log('dungeon tile POST request missing field');
+      res.status(400).send(false);
+      return;
+  }
+  try {
+    DungeonTile.create({
+      name,
+      boss,
+      stairs_up,
+      treasure,
+      encounter,
+      trap
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
+
+dungeonTileRouter.put('/dungeon_tile', authorization, async (req, res) => {
+  let {
+    id,
+    name,
+    boss,
+    stairs_up,
+    treasure,
+    encounter,
+    trap
+  } = req.body;
+
+  // validate input types
+  if (id === undefined || id === null) {
+    console.log('Attempted PUT request for dungeon tile with invalid id');
+    res.status(400).send(false);
+    return;
+  }
+  if (name && typeof name !== 'string') {
+    name = name.toString();
+  }
+  id = validation.validateInteger(id);
+  boss = validation.validateBoolean(boss);
+  stairs_up = validation.validateBoolean(stairs_up);
+  treasure = validation.validateInteger(treasure);
+  encounter = validation.validateInteger(encounter);
+  trap = validation.validateInteger(trap);
+
+  if (!name || treasure === undefined || encounter === undefined || 
+    trap === undefined) {
+      console.log('dungeon tile PUT request missing field');
+      res.status(400).send(false);
+      return;
+  }
+
+  try {
+    DungeonTile.update({
+      name,
+      boss,
+      stairs_up,
+      treasure,
+      encounter,
+      trap
+    }, { where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+})
+
 module.exports = dungeonTileRouter;

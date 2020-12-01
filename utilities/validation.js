@@ -14,6 +14,14 @@ const validation = (function(){
       } else {
         return str.toString();
       }
+    },
+    validateBoolean: function(bool) {
+      if (bool === undefined || bool === null) return false;
+      if (bool === 'true' || bool === true) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }());
