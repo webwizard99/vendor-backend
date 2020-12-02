@@ -8,6 +8,11 @@ const validation = require('../../utilities/validation');
 
 const dungeonTileRouter = express.Router();
 
+dungeonTileRouter.param(':tileId', (req, res, next, id) => {
+  req.id = id;
+  next();
+});
+
 dungeonTileRouter.get('/dungeon_tiles', async (req, res) => {
   
   try {
@@ -106,6 +111,24 @@ dungeonTileRouter.put('/dungeon_tile', authorization, async (req, res) => {
       encounter,
       trap
     }, { where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+  res.status(200).send(true);
+});
+
+dungeonTileRouter.delete('/dungeon_tile/:tileId', authorization, async (req, res) => {
+  let id = req.id;
+  if (id === null || id === undefined) {
+    res.status(400).send(false);
+    return;
+  }
+  id = validation.validateInteger(id);
+
+  try {
+    DungeonTile.destroy({ where: { id: id } });
   } catch (err) {
     console.log(err);
     res.status(400).send(false);

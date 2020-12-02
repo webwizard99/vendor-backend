@@ -156,7 +156,7 @@ classRouter.delete('/adventurer_class/:classId', authorization, async (req, res)
     AdventurerClass.destroy({ where: { id: id }});
   } catch (err) {
     console.log(err);
-    res.status.send(false);
+    res.status(400).send(false);
     return;
   }
   res.status(200).send(true);
