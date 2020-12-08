@@ -1,3 +1,4 @@
 module.exports = {
-  monster: 'monster'
+  monster: 'monster',
+  treasure: 'treasure'
 }
