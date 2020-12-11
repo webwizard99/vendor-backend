@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 const DropList = db.define('drop_list', {
-  type: {
+  drop_type: {
     type: Sequelize.TEXT,
     allowNull: false
   },

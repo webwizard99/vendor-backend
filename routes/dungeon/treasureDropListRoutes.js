@@ -25,7 +25,7 @@ treasureDropListRouter.get('/treasure_drop_lists', async (req, res) => {
       },
       { model: Drop}]
     }, { where: {
-      type: dropListTypes.treasure
+      drop_type: dropListTypes.treasure
     }});
   } catch (err) {
     console.log(err);
@@ -33,6 +33,6 @@ treasureDropListRouter.get('/treasure_drop_lists', async (req, res) => {
     return;
   }
   res.status(200).send(treasureDropLists);
-})
+});
 
 module.exports = treasureDropListRouter;
