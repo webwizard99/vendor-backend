@@ -23,8 +23,8 @@ treasureDropListRouter.get('/treasure_drop_lists', async (req, res) => {
       include: [ {
         model: TreasureDropList
       },
-      { model: Drop}]
-    }, { where: {
+      { model: Drop}],
+    where: {
       drop_type: dropListTypes.treasure
     }});
   } catch (err) {
