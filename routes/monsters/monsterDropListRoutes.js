@@ -24,8 +24,9 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
         model: MonsterDropList
       },
       { model: Drop }]
-    }, { where: {
-      drop_type: dropListTypes.monster
+,
+    where: {
+      type: dropListTypes.monster
     }});
   } catch (err) {
     console.log(err);
@@ -77,7 +78,7 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
       gold_min: gold_min,
       gold_max: gold_max,
       gold_chance: gold_chance,
-      drop_type: dropListTypes.monster
+      type: dropListTypes.monster
     });
   } catch (err) {
     console.log(err);

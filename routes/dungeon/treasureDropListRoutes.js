@@ -25,7 +25,7 @@ treasureDropListRouter.get('/treasure_drop_lists', async (req, res) => {
       },
       { model: Drop}],
     where: {
-      drop_type: dropListTypes.treasure
+      type: dropListTypes.treasure
     }});
   } catch (err) {
     console.log(err);
