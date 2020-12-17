@@ -86,7 +86,6 @@ monsterDropListRouter.post('/monster_drop_list', authorization, async (req, res)
     return;
   }
 
-  // console.log(newDropList);
   const newDropListId = newDropList.id;
   try {
     MonsterDropList.create({
