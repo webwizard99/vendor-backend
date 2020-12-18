@@ -23,8 +23,7 @@ monsterDropListRouter.get('/monster_drop_lists', async (req, res) => {
       include: [{
         model: MonsterDropList
       },
-      { model: Drop }]
-,
+      { model: Drop }],
     where: {
       type: dropListTypes.monster
     }});
