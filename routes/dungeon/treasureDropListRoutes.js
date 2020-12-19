@@ -159,6 +159,7 @@ treasureDropListRouter.put('/treasure_drop_list', authorization, async (req, res
   if (name && typeof name!== 'string') {
     name = name.toString();
   }
+  console.log(`name: ${name}, gold_min: ${gold_min}, gold_max: ${gold_max}, gold_chance: ${gold_chance}, id: ${id}, treasureDropListId: ${treasureDroplistId}`);
   if (!name || gold_min === undefined || gold_max === undefined || gold_chance === undefined || id === undefined || treasureDroplistId === undefined) {
     console.log('treasure_drop_list POST request missing field');
     res.status(400).send(false);
