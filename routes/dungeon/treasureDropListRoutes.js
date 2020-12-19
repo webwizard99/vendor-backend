@@ -146,7 +146,7 @@ treasureDropListRouter.put('/treasure_drop_list', authorization, async (req, res
   let {
     name,
     id,
-    treasureDroplistId,
+    treasureDropListId,
     gold_min,
     gold_max,
     gold_chance,
@@ -159,8 +159,8 @@ treasureDropListRouter.put('/treasure_drop_list', authorization, async (req, res
   if (name && typeof name!== 'string') {
     name = name.toString();
   }
-  console.log(`name: ${name}, gold_min: ${gold_min}, gold_max: ${gold_max}, gold_chance: ${gold_chance}, id: ${id}, treasureDropListId: ${treasureDroplistId}`);
-  if (!name || gold_min === undefined || gold_max === undefined || gold_chance === undefined || id === undefined || treasureDroplistId === undefined) {
+  console.log(`name: ${name}, gold_min: ${gold_min}, gold_max: ${gold_max}, gold_chance: ${gold_chance}, id: ${id}, treasureDropListId: ${treasureDropListId}`);
+  if (!name || gold_min === undefined || gold_max === undefined || gold_chance === undefined || id === undefined || treasureDropListId === undefined) {
     console.log('treasure_drop_list POST request missing field');
     res.status(400).send(false);
     return;
@@ -169,7 +169,7 @@ treasureDropListRouter.put('/treasure_drop_list', authorization, async (req, res
   gold_max = validation.validateInteger(gold_max);
   gold_chance = validation.validateInteger(gold_chance);
   id = validation.validateInteger(id);
-  treasureDroplistId = validation.validateInteger(treasureDroplistId);
+  treasureDropListId = validation.validateInteger(treasureDropListId);
 
   if (typeof existingIds === 'string' && existingIds.length > 0) {
     if (!existingIds.includes(',')) {
@@ -222,7 +222,7 @@ treasureDropListRouter.put('/treasure_drop_list', authorization, async (req, res
       dropListId: id,
       name: name
     }, { where: {
-      id: treasureDroplistId
+      id: treasureDropListId
     }});
   } catch (err) {
     console.log(err);
