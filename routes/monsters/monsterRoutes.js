@@ -56,7 +56,7 @@ monsterRouter.get('/monsters-full', async (req, res) => {
     });
     DropList.hasOne(MonsterDropList, { through: DropListDrop });
     MonsterDropList.belongsTo(DropList, { through: DropListDrop });
-    DropList.hasMany(Drop, { through: DropListDrop });
+    DropList.belongsToMany(Drop, { through: DropListDrop });
     Drop.belongsTo(DropList, { through: DropListDrop });
     Monster.belongsTo(DropListDrop);
     DropListDrop.hasMany(Monster);
