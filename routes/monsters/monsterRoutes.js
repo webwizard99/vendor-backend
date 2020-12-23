@@ -1,5 +1,8 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const Monster = require('../../models/Monsters');
+const MonsterDropList = require('../../models/MonsterDropList');
+const Drop = require('../../models/Drop');
 const DropList = require('../../models/DropList');
 const MonsterBehavior = require('../../models/MonsterBehaviors');
 
@@ -27,13 +30,40 @@ monsterRouter.get('/monsters', async (req, res) => {
 
 monsterRouter.get('/monsters-full', async (req, res) => {
   try {
-    Monster.belongsTo(DropList);
-    DropList.hasMany(Monster);
+    const DropListDrop = Sequelize.define('DropListDrops', {
+      dropListId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: DropList,
+          key: 'id'
+        },
+        monsterDropListId: {
+          type: Sequelize.DataTypes.INTEGER,
+          references: {
+            model: MonsterDropList,
+            key: 'id'
+          }
+        },
+        dropId: {
+          type: Sequelize.DataTypes.INTEGER,
+          references: {
+            model: Drop,
+            key: 'id'
+          }
+        }
+      }
+    });
+    DropList.hasOne(MonsterDropList, { through: DropListDrop });
+    MonsterDropList.belongsTo(DropList, { through: DropListDrop });
+    DropList.hasMany(Drop, { through: DropListDrop });
+    Drop.belongsTo(DropList, { through: DropListDrop });
+    Monster.belongsTo(DropListDrop);
+    DropListDrop.hasMany(Monster);
     Monster.belongsTo(MonsterBehavior);
     MonsterBehavior.hasMany(Monster);
     let monsters = await Monster.findAll({
       include: [
-        { model: DropList },
+        { model: DropListDrop },
         { model: MonsterBehavior }
       ]
     });

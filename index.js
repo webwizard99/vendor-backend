@@ -31,6 +31,7 @@ const monsterRoutes = require('./routes/monsters/monsterRoutes');
 // dungeon imports
 const dungeonTileRoutes = require('./routes/dungeon/dungeonTileRoutes');
 const treasureDropListRoutes = require('./routes/dungeon/treasureDropListRoutes');
+const levelRoutes = require('./routes/dungeon/levelRoutes');
 
 const app = express();
 
@@ -85,5 +86,6 @@ app.use('/', monsterRoutes);
 // mount dungeon routes
 app.use('/', dungeonTileRoutes);
 app.use('/', treasureDropListRoutes);
+app.use('/', levelRoutes);
 
 app.listen(PORT);
