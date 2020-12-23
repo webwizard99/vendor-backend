@@ -1,5 +1,6 @@
 const express = require('express');
 const Sequelize = require('sequelize');
+const db = require('../../config/database');
 const Monster = require('../../models/Monsters');
 const MonsterDropList = require('../../models/MonsterDropList');
 const Drop = require('../../models/Drop');
@@ -30,7 +31,7 @@ monsterRouter.get('/monsters', async (req, res) => {
 
 monsterRouter.get('/monsters-full', async (req, res) => {
   try {
-    const DropListDrop = Sequelize.define('DropListDrops', {
+    const DropListDrop = db.define('DropListDrops', {
       dropListId: {
         type: Sequelize.DataTypes.INTEGER,
         references: {
