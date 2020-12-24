@@ -1,6 +1,4 @@
 const express = require('express');
-const Sequelize = require('sequelize');
-const db = require('../../config/database');
 const Monster = require('../../models/Monsters');
 const MonsterDropList = require('../../models/MonsterDropList');
 const Drop = require('../../models/Drop');
@@ -31,41 +29,30 @@ monsterRouter.get('/monsters', async (req, res) => {
 
 monsterRouter.get('/monsters-full', async (req, res) => {
   try {
-    const DropListDrop = db.define('DropListDrops', {
-      dropListId: {
-        type: Sequelize.DataTypes.INTEGER,
-        references: {
-          model: DropList,
-          key: 'id'
-        },
-        monsterDropListId: {
-          type: Sequelize.DataTypes.INTEGER,
-          references: {
-            model: MonsterDropList,
-            key: 'id'
-          }
-        },
-        dropId: {
-          type: Sequelize.DataTypes.INTEGER,
-          references: {
-            model: Drop,
-            key: 'id'
-          }
-        }
-      }
-    });
-    DropList.hasOne(MonsterDropList, { through: DropListDrop });
-    MonsterDropList.belongsTo(DropList, { through: DropListDrop });
-    DropList.belongsToMany(Drop, { through: DropListDrop });
-    Drop.belongsTo(DropList, { through: DropListDrop });
-    Monster.belongsTo(DropListDrop);
-    DropListDrop.hasMany(Monster);
+    Monster.belongsTo(DropList);
+    DropList.hasMany(Monster);
     Monster.belongsTo(MonsterBehavior);
     MonsterBehavior.hasMany(Monster);
+    DropList.hasOne(MonsterDropList);
+    MonsterDropList.belongsTo(DropList);
+    DropList.hasMany(Drop);
+    Drop.belongsTo(DropList);
     let monsters = await Monster.findAll({
       include: [
-        { model: DropListDrop },
-        { model: MonsterBehavior }
+        { model: MonsterBehavior },
+        { model: DropList,
+          required: true,
+          include: [
+            {
+              model: MonsterDropList,
+              required: true
+            },
+            {
+              model: Drop,
+              required: true
+            }
+          ]
+        }
       ]
     });
     res.status(200).send(monsters);
