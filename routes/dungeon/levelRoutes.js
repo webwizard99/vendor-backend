@@ -10,4 +10,16 @@ const validation = require('../../utilities/validation');
 
 const levelRouter = express.Router();
 
+levelRouter.get('/levels', async (req, res) => {
+  try {
+    // Level.hasMany(TileAssignment);
+    // TileAssignment.belongsTo(Level);
+    let allLevels = await Level.findAll();
+    res.status(200).send(allLevels);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+  }
+})
+
 module.exports = levelRouter;
