@@ -39,9 +39,6 @@ levelRouter.post('/level', authorization, async (req, res) => {
   } = req.body;
 
   // validate input types
-  if (name && typeof name !== 'string') {
-    name = name.toString();
-  }
   boss = validation.validateBoolean(boss);
   number = validation.validateInteger(number);
   dropListId = validation.validateInteger(dropListId);
@@ -124,9 +121,6 @@ levelRouter.put('/level', authorization, async (req, res) => {
   } = req.body;
 
   // validate input types
-  if (name && typeof name !== 'string') {
-    name = name.toString();
-  }
   if (id === undefined || id === null) {
     console.log('Attempted PUT request for monster with invalid id');
     res.status(400).send(false);
