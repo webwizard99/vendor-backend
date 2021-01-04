@@ -253,6 +253,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
 
   // Add new tileAssignments to database
   for (let index of newAssignmentKeys) {
+    console.log(newAssignmentKeys)
     let assignmentTileId = req.body[`new-assignment-${index}-tileId`];
     let assignmentProbability = req.body[`new-assignment-${index}-probability`];
 
