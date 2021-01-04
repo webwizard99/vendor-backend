@@ -67,8 +67,7 @@ levelRouter.post('/level', authorization, async (req, res) => {
       boss,
       boss_id,
       monsters_min_level,
-      monsters_max_level,
-      newAssignmentKeys
+      monsters_max_level
     }
   } else {
     modelPayload = {
@@ -76,8 +75,7 @@ levelRouter.post('/level', authorization, async (req, res) => {
       dropListId,
       boss,
       monsters_min_level,
-      monsters_max_level,
-      newAssignmentKeys
+      monsters_max_level
     }
   }
 
@@ -179,8 +177,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
       boss,
       boss_id,
       monsters_min_level,
-      monsters_max_level,
-      newAssignmentKeys
+      monsters_max_level
     }
   } else {
     modelPayload = {
@@ -188,8 +185,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
       dropListId,
       boss,
       monsters_min_level,
-      monsters_max_level,
-      newAssignmentKeys
+      monsters_max_level
     }
   }
 
