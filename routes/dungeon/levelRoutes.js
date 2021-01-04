@@ -56,9 +56,11 @@ levelRouter.post('/level', authorization, async (req, res) => {
   // convert arrays from form back to arrays
   newAssignmentKeys = stringArrayHandler.getArrayFromString(newAssignmentKeys);
 
-  let newLevel;
-  try {
-    newLevel = await Level.create({
+  // create object for model creation based on presence
+  // of boss data
+  let modelPayload = {}
+  if (boss) {
+    modelPayload = {
       number,
       dropListId,
       boss,
@@ -66,7 +68,21 @@ levelRouter.post('/level', authorization, async (req, res) => {
       monsters_min_level,
       monsters_max_level,
       newAssignmentKeys
-    });
+    }
+  } else {
+    modelPayload = {
+      number,
+      dropListId,
+      boss,
+      monsters_min_level,
+      monsters_max_level,
+      newAssignmentKeys
+    }
+  }
+
+  let newLevel;
+  try {
+    newLevel = await Level.create(modelPayload);
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
@@ -146,15 +162,32 @@ levelRouter.put('/level', authorization, async (req, res) => {
   presentIds = stringArrayHandler.getArrayFromString(presentIds);
   deletedIds = stringArrayHandler.getArrayFromString(deletedIds);
 
-  try {
-    Level.update({
+// create object for model creation based on presence
+  // of boss data
+  let modelPayload = {}
+  if (boss) {
+    modelPayload = {
       number,
       dropListId,
       boss,
       boss_id,
       monsters_min_level,
-      monsters_max_level
-    });
+      monsters_max_level,
+      newAssignmentKeys
+    }
+  } else {
+    modelPayload = {
+      number,
+      dropListId,
+      boss,
+      monsters_min_level,
+      monsters_max_level,
+      newAssignmentKeys
+    }
+  }
+
+  try {
+    Level.update(modelPayload);
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
