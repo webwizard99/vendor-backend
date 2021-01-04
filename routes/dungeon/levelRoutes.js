@@ -94,15 +94,17 @@ levelRouter.post('/level', authorization, async (req, res) => {
     return;
   }
 
+  console.log(newAssignmentKeys);
+
   for (let index of newAssignmentKeys) {
-    let tileId = req.body[`new-assignment-${index}-tileId`];
-    let probability = req.body[`new-assignment-${index}-probability`];
+    let assignmentTileId = req.body[`new-assignment-${index}-tileId`];
+    let assignmentProbability = req.body[`new-assignment-${index}-probability`];
 
     // validate inputs
-    tileId = validation.validateInteger(tileId);
-    probability = validation.validateInteger(probability);
+    assignmentTileId = validation.validateInteger(assignmentTileId);
+    assignmentProbability = validation.validateInteger(assignmentProbability);
 
-    if (!tileId || !probability) {
+    if (!assignmentTileId || !assignmentProbability) {
       console.log('attempted to create tileAssignment with missing field');
       res.status(400).send();
     }
@@ -110,8 +112,8 @@ levelRouter.post('/level', authorization, async (req, res) => {
     try {
       TileAssignment.create({
         levelId: newLevel.id,
-        tileId,
-        probability
+        tileId: assignmentTileId,
+        probability: assignmentProbability
       });
     } catch (err) {
       console.log(err);
