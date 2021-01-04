@@ -55,6 +55,7 @@ levelRouter.post('/level', authorization, async (req, res) => {
 
   // convert arrays from form back to arrays
   newAssignmentKeys = stringArrayHandler.getArrayFromString(newAssignmentKeys);
+  newAssignmentKeys = stringArrayHandler.getIntArrayFromStringArray(newAssignmentKeys);
 
   // create object for model creation based on presence
   // of boss data
@@ -104,7 +105,7 @@ levelRouter.post('/level', authorization, async (req, res) => {
     assignmentTileId = validation.validateInteger(assignmentTileId);
     assignmentProbability = validation.validateInteger(assignmentProbability);
 
-    if (!assignmentTileId || !assignmentProbability) {
+    if (assignmentTileId === false || !assignmentProbability) {
       console.log('attempted to create tileAssignment with missing field');
       res.status(400).send();
     }
@@ -163,6 +164,10 @@ levelRouter.put('/level', authorization, async (req, res) => {
   newAssignmentKeys = stringArrayHandler.getArrayFromString(newAssignmentKeys);
   presentIds = stringArrayHandler.getArrayFromString(presentIds);
   deletedIds = stringArrayHandler.getArrayFromString(deletedIds);
+  // convert array entries to integers
+  newAssignmentKeys = stringArrayHandler.getIntArrayFromStringArray(newAssignmentKeys);
+  presentIds = stringArrayHandler.getIntArrayFromStringArray(presentIds);
+  deletedIds = stringArrayHandler.getIntArrayFromStringArray(deletedIds);
 
 // create object for model creation based on presence
   // of boss data
@@ -217,14 +222,14 @@ levelRouter.put('/level', authorization, async (req, res) => {
   // handle existing tileAssignments
   if (presentIds.length > 0) {
     for (let presentId of presentIds) {
-      let tileId = req.body[`assignment-${assignment.id}-tileId`];
-      let probability = req.body[`assignment-${assignment.id}-probability`];
+      let assignmentTileId = req.body[`assignment-${presentId}-tileId`];
+      let assignmentProbability = req.body[`assignment-${presentId}-probability`];
 
       // validate inputs
-      tileId = validation.validateInteger(tileId);
-      probability = validation.validateInteger(probability);
+      assignmentTileId = validation.validateInteger(assignmentTileId);
+      assignmentProbability = validation.validateInteger(assignmentProbability);
 
-      if (!tileId || !probability) {
+      if (assignmentTileId === false || !assignmentProbability) {
         console.log('attempted to update tileAssignment with missing field');
         res.status(400).send();
       }
@@ -232,8 +237,8 @@ levelRouter.put('/level', authorization, async (req, res) => {
       // update model
       try {
         TileAssignment.update({
-          tileId,
-          probability
+          tileId: assignmentTileId,
+          probability:assignmentProbability
         }, { where: { 
           id: presentId 
         }});
@@ -252,14 +257,14 @@ levelRouter.put('/level', authorization, async (req, res) => {
 
   // Add new tileAssignments to database
   for (let index of newAssignmentKeys) {
-    let tileId = req.body[`new-assignment-${index}-tileId`];
+    let assignmentTileId = req.body[`new-assignment-${index}-tileId`];
     let probability = req.body[`new-assignment-${index}-probability`];
 
     // validate inputs
-    tileId = validation.validateInteger(tileId);
-    probability = validation.validateInteger(probability);
+    assignmentTileId = validation.validateInteger(assignmentTileId);
+    assignmentProbability = validation.validateInteger(assignmentProbability);
 
-    if (!tileId || !probability) {
+    if (assignmentTileId === false || !assignmentProbability) {
       console.log('attempted to create tileAssignment with missing field');
       res.status(400).send();
     }
@@ -267,8 +272,8 @@ levelRouter.put('/level', authorization, async (req, res) => {
     try {
       TileAssignment.create({
         levelId: id,
-        tileId,
-        probability
+        tileId: assignmentTileId,
+        probability: assignmentProbability
       });
     } catch (err) {
       console.log(err);

@@ -1,6 +1,7 @@
 const validation = (function(){
   return {
     validateInteger: function(num) {
+      if (num === undefined || num === null) return false;
       if (typeof num === 'number') {
         return num;
       } else {
