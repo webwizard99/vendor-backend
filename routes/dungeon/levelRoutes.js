@@ -190,7 +190,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
   }
 
   try {
-    Level.update(modelPayload);
+    Level.update(modelPayload, { where: { id: id } });
   } catch (err) {
     console.log(err);
     res.status(400).send(false);
