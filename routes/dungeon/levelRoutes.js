@@ -144,7 +144,6 @@ levelRouter.put('/level', authorization, async (req, res) => {
     return;
   }
   id = validation.validateInteger(id);
-  console.log(id);
   boss = validation.validateBoolean(boss);
   number = validation.validateInteger(number);
   dropListId = validation.validateInteger(dropListId);
@@ -254,12 +253,8 @@ levelRouter.put('/level', authorization, async (req, res) => {
 
   // Add new tileAssignments to database
   for (let index of newAssignmentKeys) {
-    console.log(newAssignmentKeys)
     let assignmentTileId = req.body[`new-assignment-${index}-tileId`];
     let assignmentProbability = req.body[`new-assignment-${index}-probability`];
-    console.log(assignmentTileId);
-    console.log(assignmentProbability);
-    console.log(id);
     // validate inputs
     assignmentTileId = validation.validateInteger(assignmentTileId);
     assignmentProbability = validation.validateInteger(assignmentProbability);
