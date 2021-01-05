@@ -144,6 +144,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
     return;
   }
   id = validation.validateInteger(id);
+  console.log(id);
   boss = validation.validateBoolean(boss);
   number = validation.validateInteger(number);
   dropListId = validation.validateInteger(dropListId);
