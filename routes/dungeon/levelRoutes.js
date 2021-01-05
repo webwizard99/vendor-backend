@@ -258,6 +258,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
     let assignmentProbability = req.body[`new-assignment-${index}-probability`];
     console.log(assignmentTileId);
     console.log(assignmentProbability);
+    console.log(id);
     // validate inputs
     assignmentTileId = validation.validateInteger(assignmentTileId);
     assignmentProbability = validation.validateInteger(assignmentProbability);
