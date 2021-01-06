@@ -264,15 +264,15 @@ supplierRouter.delete('/supplier', authorization, async (req, res) => {
     id, offeringIds: deletedIds
   } = req.body;
 
+  // Exit if no valid ID sent
+  if (id === undefined || id === null) {
+    res.status(400).send(false);
+    return;
+  }
+
   // Validate data
   if (id && typeof id != 'number') {
     id = Number.parseInt(id);
-  }
-
-  // Exit if no valid ID sent
-  if (!id) {
-    res.status(400).send(false);
-    return;
   }
 
   // validate and convert offering ids

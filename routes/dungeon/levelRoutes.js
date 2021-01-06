@@ -277,6 +277,55 @@ levelRouter.put('/level', authorization, async (req, res) => {
   }
 
   res.status(200).send(true);
+});
+
+levelRouter.delete('/level', authorization, async (req, res) => {
+  let {
+    id, assignmentIds: deletedIds
+  } = req.body;
+
+  // Exit if no valid ID sent
+  if (id === undefined || id === null) {
+    res.status(400).send(false);
+    return;
+  }
+
+  // Validate data
+  if (id && typeof id != 'number') {
+    id = Number.parseInt(id);
+  }
+
+  // validate and convert assignment ids
+  deletedIds = stringArrayHandler.getArrayFromString(deletedIds);
+  deletedIds = stringArrayHandler.getIntArrayFromStringArray(deletedIds);
+
+  // associate models
+  Level.hasMany(TileAssignment);
+  TileAssignment.belongsTo(Level);
+
+  try {
+    Level.destroy({ where: { id: id } });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  // handle existing assignments to be deleted
+  if (deletedIds.length > 0) {
+    for (let delId of deletedIds) {
+      // delete tileAssignment from database
+      try {
+        TileAssignment.destroy({ where: { id: delId } });
+      } catch(err) {
+        console.log(err);
+        res.status(400).send();
+      }
+    }
+  }
+
+  res.status(200).send(true);
 })
+
 
 module.exports = levelRouter;
