@@ -2,6 +2,8 @@ const express = require('express');
 const Level = require('../../models/Level');
 const TileAssignment = require('../../models/TileAssignment');
 const DropList = require('../../models/DropList');
+const TreasureDropList = require('../../models/TreasureDropList');
+const Drop = require('../../models/Drop');
 
 // middleware imports
 const authorization = require('../../middleware/authorization');
@@ -16,7 +18,7 @@ levelRouter.get('/levels', async (req, res) => {
     Level.hasMany(TileAssignment);
     TileAssignment.belongsTo(Level);
     let allLevels = await Level.findAll({
-      include: {
+      include: { 
         model: TileAssignment
       }
     });
@@ -26,6 +28,41 @@ levelRouter.get('/levels', async (req, res) => {
     res.status(400).send(false);
   }
 });
+
+levelRouter.get('/levels-full', async (req, res) => {
+  try {
+    Level.hasMany(TileAssignment);
+    TileAssignment.belongsTo(Level);
+    Level.belongsTo(DropList);
+    DropList.hasMany(Level);
+    DropList.hasOne(TreasureDropList);
+    TreasureDropList.belongsTo(DropList);
+    DropList.hasMany(Drop);
+    Drop.belongsTo(DropList);
+    let allLevels = await Level.findAll({
+      include: [
+        { model: TileAssignment },
+        { model: DropList,
+          required: true,
+          include: [
+            {
+              model: TreasureDropList,
+              required: true
+            },
+            {
+              model: Drop,
+              required: true
+            }
+          ]
+      }
+      ]
+    });
+    res.status(200).send(allLevels);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+  }
+})
 
 levelRouter.post('/level', authorization, async (req, res) => {
   let {
