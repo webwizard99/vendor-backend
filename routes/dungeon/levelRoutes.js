@@ -34,6 +34,8 @@ levelRouter.get('/levels-full', async (req, res) => {
   try {
     Level.hasMany(TileAssignment);
     TileAssignment.belongsTo(Level);
+    TileAssignment.belongsTo(DungeonTile);
+    DungeonTile.hasMany(TileAssignment);
     Level.belongsTo(DropList);
     DropList.hasMany(Level);
     DropList.hasOne(TreasureDropList);
@@ -42,7 +44,13 @@ levelRouter.get('/levels-full', async (req, res) => {
     Drop.belongsTo(DropList);
     let allLevels = await Level.findAll({
       include: [
-        { model: TileAssignment },
+        { model: TileAssignment,
+          required: true,
+          include: {
+            model: DungeonTile,
+            required: true
+          } 
+        },
         { model: DropList,
           required: true,
           include: [
