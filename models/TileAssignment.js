@@ -6,7 +6,7 @@ const TileAssignment = db.define('tile_assignment', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  tileId: {
+  dungeonTileId: {
     type: Sequelize.INTEGER,
     allowNull: false
   },

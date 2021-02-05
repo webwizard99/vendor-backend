@@ -1,6 +1,7 @@
 const express = require('express');
 const Level = require('../../models/Level');
 const TileAssignment = require('../../models/TileAssignment');
+const DungeonTile = require('../../models/DungeonTile')
 const DropList = require('../../models/DropList');
 const TreasureDropList = require('../../models/TreasureDropList');
 const Drop = require('../../models/Drop');
@@ -148,7 +149,7 @@ levelRouter.post('/level', authorization, async (req, res) => {
     try {
       TileAssignment.create({
         levelId: newLevel.id,
-        tileId: assignmentTileId,
+        dungeonTileId: assignmentTileId,
         probability: assignmentProbability
       });
     } catch (err) {
@@ -270,7 +271,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
       // update model
       try {
         TileAssignment.update({
-          tileId: assignmentTileId,
+          dungeonTileId: assignmentTileId,
           probability:assignmentProbability
         }, { where: { 
           id: presentId 
@@ -304,7 +305,7 @@ levelRouter.put('/level', authorization, async (req, res) => {
     try {
       TileAssignment.create({
         levelId: id,
-        tileId: assignmentTileId,
+        dungeonTileId: assignmentTileId,
         probability: assignmentProbability
       });
     } catch (err) {
