@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 
 const itemTypes = require('../../config/itemTypes');
 const authorization = require('../../middleware/authorization');
+const validation = require('../../utilities/validation');
 
 const weaponRouter = express.Router();
 
@@ -33,8 +34,10 @@ weaponRouter.get('/weapons', async (req, res) => {
 // GET route for weapons in level range
 weaponRouter.get('/weapons-in-level-range', async (req, res) => {
   Weapon.belongsTo(Item);
-  const minLevel = req.query['min-level'];
-  const maxLevel = req.query['max-level'];
+  let minLevel = req.query['min-level'];
+  let maxLevel = req.query['max-level'];
+  minLevel = validation.validateInteger(minLevel);
+  maxLevel = validation.validateInteger(maxLevel);
   let weapons;
   try {
     weapons = await Weapon.findAll({
@@ -54,7 +57,28 @@ weaponRouter.get('/weapons-in-level-range', async (req, res) => {
     return;
   }
   res.status(200).send(weapons);
-})
+});
+
+weaponRouter.get('/weapon-id', async (req, res) => {
+  Weapon.belongsTo(Item);
+  let id = req.query['id'];
+  id = validation.validateInteger(id);
+  let weapon; 
+  try {
+    weapon = await Weapon.findAll({
+      include: {
+        model: Item
+      },
+      where: { itemId: id }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(weapon);
+});
 
 // handle weapon POST request
 weaponRouter.post('/weapon', authorization, async (req, res) => {

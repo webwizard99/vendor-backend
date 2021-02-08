@@ -6,6 +6,7 @@ const { Op } = require('sequelize');
 const itemTypes = require('../../config/itemTypes');
 const potionTypes = require('../../config/potionTypes');
 const authorization = require('../../middleware/authorization');
+const validation = require('../../utilities/validation');
 
 const potionRouter = express.Router();
 
@@ -34,8 +35,10 @@ potionRouter.get('/potions', async (req, res) => {
 // GET route for potions in level range
 potionRouter.get('/potions-in-level-range', async (req, res) => {
   Potion.belongsTo(Item);
-  const minLevel = req.query['min-level'];
-  const maxLevel = req.query['max-level'];
+  let minLevel = req.query['min-level'];
+  let maxLevel = req.query['max-level'];
+  minLevel = validation.validateInteger(minLevel);
+  maxLevel = validation.validateInteger(maxLevel);
   let potions;
   try {
     potions = await Potion.findAll({
@@ -54,7 +57,28 @@ potionRouter.get('/potions-in-level-range', async (req, res) => {
     return;
   }
   res.status(200).send(potions);
-})
+});
+
+potionRouter.get('/potion-id', async (req, res) => {
+  Potion.belongsTo(Item);
+  let id = req.query['id'];
+  id = validation.validateInteger(id);
+  let potion;
+  try {
+    potion = await Potion.findAll({
+      include: {
+        model: Item
+      },
+      where: { itemId: id }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(potion);
+});
 
 // handle potion POST request
 potionRouter.post('/potion', authorization, async (req, res) => {

@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 
 const itemTypes = require('../../config/itemTypes');
 const authorization = require('../../middleware/authorization');
-
+const validation = require('../../utilities/validation');
 const armorRouter = express.Router();
 
 armorRouter.param('itemId', (req, res, next, id) => {
@@ -30,11 +30,34 @@ armorRouter.get('/armor', async (req, res) => {
   res.status(200).send(allArmor);
 });
 
+armorRouter.get('/armor-id', async (req, res) => {
+  Armor.belongsTo(Item);
+  let id = req.query['id'];
+  id = validation.validateInteger(id);
+  let armor;
+  try {
+    armor = await Armor.findAll({
+      include: {
+        model: Item
+      },
+      where: { itemId: id }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(armor);
+})
+
 // GET route for armor in level range
 armorRouter.get('/armor-in-level-range', async (req, res) => {
   Armor.belongsTo(Item);
-  const minLevel = req.query['min-level'];
-  const maxLevel = req.query['max-level'];
+  let minLevel = req.query['min-level'];
+  let maxLevel = req.query['max-level'];
+  minLevel = validation.validateInteger(minLevel);
+  maxLevel = validation.validateInteger(maxLevel);
   let armor;
   try {
     armor = await Armor.findAll({
