@@ -4,6 +4,7 @@ const MonsterDropList = require('../../models/MonsterDropList');
 const Drop = require('../../models/Drop');
 const DropList = require('../../models/DropList');
 const MonsterBehavior = require('../../models/MonsterBehaviors');
+const { Op } = require('sequelize');
 
 // middleware imports
 const authorization = require('../../middleware/authorization');
@@ -61,7 +62,28 @@ monsterRouter.get('/monsters-full', async (req, res) => {
     res.status(400).send(false);
     return;
   }
-})
+});
+
+// GET route for monsters in level range
+monsterRouter.get('/monsters-in-level-range', async (req, res) => {
+  const minLevel = req.query['min-level'];
+  const maxLevel = req.query['max-level'];
+  let monsters;
+  try {
+    monsters = await Monster.findAll({ where: {
+      level: {
+        [Op.gte]: minLevel,
+        [Op.lte]: maxLevel
+      }
+    }})
+  } catch (err) {
+    console.log(err);
+    req.status(400).send(false);
+    return;
+  }
+
+  res.status(200).send(monsters);
+});
 
 monsterRouter.post('/monster', authorization, async (req, res) => {
   let {
