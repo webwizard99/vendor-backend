@@ -69,12 +69,40 @@ monsterRouter.get('/monsters-in-level-range', async (req, res) => {
   const minLevel = req.query['min-level'];
   const maxLevel = req.query['max-level'];
   let monsters;
+
+  // define relations
+  Monster.belongsTo(DropList);
+  DropList.hasMany(Monster);
+  Monster.belongsTo(MonsterBehavior);
+  MonsterBehavior.hasMany(Monster);
+  DropList.hasOne(MonsterDropList);
+  MonsterDropList.belongsTo(DropList);
+  DropList.hasMany(Drop);
+  Drop.belongsTo(DropList);
+
   try {
-    monsters = await Monster.findAll({ where: {
-      level: {
-        [Op.gte]: minLevel,
-        [Op.lte]: maxLevel
-      }
+    monsters = await Monster.findAll({ 
+      include: [
+        { model: MonsterBehavior },
+        { model: DropList,
+          required: true,
+          include: [
+            {
+              model: MonsterDropList,
+              required: true
+            },
+            {
+              model: Drop,
+              required: true
+            }
+          ]
+        }
+      ],
+      where: {
+        level: {
+          [Op.gte]: minLevel,
+          [Op.lte]: maxLevel
+        }
     }})
   } catch (err) {
     console.log(err);
