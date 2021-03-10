@@ -14,6 +14,7 @@ module.exports = new Sequelize(client.database, client.user, client.password, {
   host: client.host,
   dialect: 'postgres',
   operatorAliases: false,
+  ssl: true,
 
   pool: {
     max: 5,
