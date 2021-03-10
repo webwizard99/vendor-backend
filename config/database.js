@@ -9,6 +9,7 @@ const client = new Client({
 
 client.connect();
 
+// comment to push ref
 module.exports = new Sequelize(client.database, client.user, client.password, {
   host: client.host,
   dialect: 'postgres',
