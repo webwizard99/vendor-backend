@@ -89,6 +89,10 @@ const DungeonBehavior = db.define('dungeon_behavior', {
   prefer_weaker_monster: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  set_trap: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 

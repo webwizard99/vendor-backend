@@ -233,7 +233,8 @@ behaviorRouter.post('/dungeon_behavior', authorization, async (req, res) => {
     upgrade_inventory,
     fight_boss_monster,
     prefer_weaker_monster,
-    try_for_level
+    try_for_level,
+    set_trap
   } = req.body;
 
   // validate input types
@@ -261,6 +262,7 @@ behaviorRouter.post('/dungeon_behavior', authorization, async (req, res) => {
   fight_boss_monster = validation.validateInteger(fight_boss_monster);
   prefer_weaker_monster = validation.validateInteger(prefer_weaker_monster);
   try_for_level = validation.validateInteger(try_for_level);
+  set_trap = validation.validateInteger(set_trap);
 
   if (!name || advance_tile === undefined || conserve_health === undefined ||
     use_potion === undefined || rest === undefined || return_to_town === undefined || 
@@ -269,7 +271,8 @@ behaviorRouter.post('/dungeon_behavior', authorization, async (req, res) => {
     defend === undefined || attack === undefined || check_monster_weakness === undefined || 
     explore_level === undefined || advance_next_level === undefined || 
     fill_inventory === undefined || upgrade_inventory === undefined || 
-    fight_boss_monster === undefined || prefer_weaker_monster === undefined || try_for_level === undefined) {
+    fight_boss_monster === undefined || prefer_weaker_monster === undefined || try_for_level === undefined ||
+    set_trap === undefined) {
       console.log('dungeon behavior post request missing field');
       res.status(400).send(false);
       return;
@@ -297,7 +300,8 @@ behaviorRouter.post('/dungeon_behavior', authorization, async (req, res) => {
       upgrade_inventory,
       fight_boss_monster,
       prefer_weaker_monster,
-      try_for_level
+      try_for_level,
+      set_trap
     });
   } catch(err) {
     console.log(err);
@@ -331,7 +335,8 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
     upgrade_inventory,
     fight_boss_monster,
     prefer_weaker_monster,
-    try_for_level
+    try_for_level,
+    set_trap
   } = req.body;
 
   // validate input types
@@ -365,6 +370,7 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
   fight_boss_monster = validation.validateInteger(fight_boss_monster);
   prefer_weaker_monster = validation.validateInteger(prefer_weaker_monster);
   try_for_level = validation.validateInteger(try_for_level);
+  set_trap = validation.validateInteger(set_trap);
 
   if (!name || advance_tile === undefined || conserve_health === undefined ||
     use_potion === undefined || rest === undefined || return_to_town === undefined || 
@@ -373,7 +379,8 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
     defend === undefined || attack === undefined || check_monster_weakness === undefined || 
     explore_level === undefined || advance_next_level === undefined || 
     fill_inventory === undefined || upgrade_inventory === undefined || 
-    fight_boss_monster === undefined || prefer_weaker_monster === undefined || try_for_level === undefined) {
+    fight_boss_monster === undefined || prefer_weaker_monster === undefined || try_for_level === undefined ||
+    set_trap === undefined) {
       console.log('dungeon behavior put request missing field');
       res.status(400).send(false);
       return;
@@ -402,7 +409,8 @@ behaviorRouter.put('/dungeon_behavior', authorization, async (req, res) => {
       upgrade_inventory,
       fight_boss_monster,
       prefer_weaker_monster,
-      try_for_level
+      try_for_level,
+      set_trap
     }, { where: {
       id: id
     }});
