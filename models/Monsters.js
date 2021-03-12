@@ -4,51 +4,55 @@ const db = require('../config/database');
 const Monster = db.define('monster', {
   name: {
     type: Sequelize.STRING,
-    allowedNull: false
+    allowNull: false
   },
   boss: {
     type: Sequelize.BOOLEAN,
-    allowedNull: false
+    allowNull: false
   },
   level: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   hp: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   }, 
   damage: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   defense: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   stealth: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   initiative: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   special: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   heal: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
+  },
+  experience: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   dropListId: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   },
   monsterBehaviorId: {
     type: Sequelize.INTEGER,
-    allowedNull: false
+    allowNull: false
   }
 });
 

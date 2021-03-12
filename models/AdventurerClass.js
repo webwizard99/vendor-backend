@@ -4,7 +4,7 @@ const db = require('../config/database');
 const AdventurerClass = db.define('adventurer_class', {
   name: {
     type: Sequelize.STRING,
-    allowedNull: false
+    allowNull: false
   },
   bargaining: {
     type: Sequelize.INTEGER,

@@ -125,6 +125,7 @@ monsterRouter.post('/monster', authorization, async (req, res) => {
     initiative,
     special,
     heal,
+    experience,
     dropListId,
     monsterBehaviorId
   } = req.body;
@@ -144,10 +145,12 @@ monsterRouter.post('/monster', authorization, async (req, res) => {
   heal = validation.validateInteger(heal);
   dropListId = validation.validateInteger(dropListId);
   monsterBehaviorId = validation.validateInteger(monsterBehaviorId);
+  experience = validation.validateInteger(experience);
 
   if (!name || boss === undefined || level === undefined || hp === undefined || 
     damage === undefined || defense === undefined || stealth === undefined || 
     initiative === undefined || special === undefined || heal === undefined || 
+    experience === undefined ||
     dropListId === undefined || monsterBehaviorId === undefined) {
       console.log('monster POST request missing field');
       res.status(400).send(false);
@@ -165,6 +168,7 @@ monsterRouter.post('/monster', authorization, async (req, res) => {
       initiative,
       special,
       heal,
+      experience,
       dropListId,
       monsterBehaviorId
     });
@@ -189,6 +193,7 @@ monsterRouter.put('/monster', authorization, async (req, res) => {
     initiative,
     special,
     heal,
+    experience,
     dropListId,
     monsterBehaviorId
   } = req.body;
@@ -218,10 +223,12 @@ monsterRouter.put('/monster', authorization, async (req, res) => {
   heal = validation.validateInteger(heal);
   dropListId = validation.validateInteger(dropListId);
   monsterBehaviorId = validation.validateInteger(monsterBehaviorId);
+  experience = validation.validateInteger(experience);
 
   if (!name || boss === undefined || level === undefined || hp === undefined || 
     damage === undefined || defense === undefined || stealth === undefined || 
     initiative === undefined || special === undefined || heal === undefined || 
+    experience === undefined ||
     dropListId === undefined || monsterBehaviorId === undefined) {
       console.log('monster PUT request missing field');
       res.status(400).send(false);
@@ -240,6 +247,7 @@ monsterRouter.put('/monster', authorization, async (req, res) => {
       initiative,
       special,
       heal,
+      experience,
       dropListId,
       monsterBehaviorId
     }, { where: { id: id } });
